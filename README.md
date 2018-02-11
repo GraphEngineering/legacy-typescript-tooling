@@ -13,7 +13,7 @@ Here's what that looks like...
 
 ```js
 {
-	"extends": "./node_modules/typescript-tooling/tsconfig",
+	"extends": "./node_modules/@cryptograph/typescript-tooling/tsconfig",
 
 	// You can add more options and overwrites...
 	"compilerOptions": {
@@ -26,7 +26,7 @@ Here's what that looks like...
 
 ```js
 {
-	"extends": "node_modules/typescript-tooling/tslint.json",
+	"extends": "node_modules/@cryptograph/typescript-tooling/tslint.json",
 
 	// You can add more options and overwrites...
 	"rules": {

@@ -29,7 +29,8 @@ try {
   tsconfigJSON = {};
 }
 
-tsconfigJSON.extends = "./node_modules/typescript-tooling/tsconfig";
+tsconfigJSON.extends =
+  "./node_modules/@cryptograph/typescript-tooling/tsconfig";
 
 fs.writeFileSync(
   `${process.env.INIT_CWD}/tsconfig.json`,
@@ -48,7 +49,8 @@ try {
   tslintJSON = {};
 }
 
-tslintJSON.extends = "./node_modules/typescript-tooling/tslint.json";
+tslintJSON.extends =
+  "./node_modules/@cryptograph/typescript-tooling/tslint.json";
 
 fs.writeFileSync(
   `${process.env.INIT_CWD}/tslint.json`,
