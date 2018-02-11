@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "module": "commonjs",
+    "target": "es2017",
+    "lib": [
+      "es2017"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

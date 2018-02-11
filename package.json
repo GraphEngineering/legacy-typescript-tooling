@@ -1,0 +1,35 @@
+{
+  "name": "typescript-tooling",
+  "version": "0.0.0",
+  "description": "This package helps to keep all of the Typescript configuration and tooling synced up between seperate CryptoGraph projects.",
+  "scripts": {
+    "postinstall": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GraphEngineering/typescript-tooling.git"
+  },
+  "keywords": [
+    "typescript",
+    "tslint",
+    "prettier",
+    "tooling"
+  ],
+  "author": "GraphEngineering",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GraphEngineering/typescript-tooling/issues"
+  },
+  "homepage": "https://github.com/GraphEngineering/typescript-tooling#readme",
+  "devDependencies": {
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.7.0",
+    "typescript": "^2.7.1",
+    "@types/express": "^4.11.0",
+    "@types/express-graphql": "0.0.35",
+    "@types/graphql": "^0.12.1",
+    "nodemon": "^1.14.11",
+    "rimraf": "^2.6.2",
+    "ts-node": "^4.1.0"
+  }
+}
