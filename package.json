@@ -1,6 +1,6 @@
 {
   "name": "@cryptograph/typescript-tooling",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description":
     "This package helps to keep all of the Typescript configuration and tooling synced up between seperate CryptoGraph projects.",
   "scripts": {
