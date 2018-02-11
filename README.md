@@ -10,11 +10,12 @@ which extend the ones from this package.
 Here's what that looks like...
 
 ## `tsconfig.json`
+
 ```js
 {
 	"extends": "./node_modules/typescript-tooling/tsconfig",
 
-	// you can add more options and overwrites...
+	// You can add more options and overwrites...
 	"compilerOptions": {
 		"outDir": "build"
 	}
@@ -22,11 +23,12 @@ Here's what that looks like...
 ```
 
 ## `tslint.json`
+
 ```js
 {
 	"extends": "node_modules/typescript-tooling/tslint.json",
 
-	// you can add more options and overwrites...
+	// You can add more options and overwrites...
 	"rules": {
 		"no-submodule-imports": [
 			true,
