@@ -17,42 +17,27 @@ fs.writeFileSync(
   JSON.stringify(localPackageJSON, null, 2)
 );
 
-console.log(
-  "Making sure there is a `tsconfig.json` which extends the one from this package."
-);
+const extendJSONConfig = fileName => {
+  console.log(
+    `Making sure there is a \`${fileName}.json\` which extends the one from this package.`
+  );
 
-let tsconfigJSON;
+  let config;
 
-try {
-  tsconfigJSON = require(`${process.env.INIT_CWD}/tsconfig`);
-} catch (e) {
-  tsconfigJSON = {};
-}
+  try {
+    config = require(`${process.env.INIT_CWD}/${fileName}`);
+  } catch (e) {
+    config = {};
+  }
 
-tsconfigJSON.extends =
-  "./node_modules/@cryptograph/typescript-tooling/tsconfig";
+  if (!config.extends)
+    config.extends = `./node_modules/@cryptograph/typescript-tooling/${fileName}.json`;
 
-fs.writeFileSync(
-  `${process.env.INIT_CWD}/tsconfig.json`,
-  JSON.stringify(tsconfigJSON, null, 2)
-);
+  fs.writeFileSync(
+    `${process.env.INIT_CWD}/${fileName}.json`,
+    JSON.stringify(config, null, 2)
+  );
+};
 
-console.log(
-  "Making sure there is a `tslint.json` which extends the one from this package."
-);
-
-let tslintJSON;
-
-try {
-  tslintJSON = require(`${process.env.INIT_CWD}/tslint`);
-} catch (e) {
-  tslintJSON = {};
-}
-
-tslintJSON.extends =
-  "./node_modules/@cryptograph/typescript-tooling/tslint.json";
-
-fs.writeFileSync(
-  `${process.env.INIT_CWD}/tslint.json`,
-  JSON.stringify(tslintJSON, null, 2)
-);
+extendJSONConfig("tsconfig");
+extendJSONConfig("tslint");
