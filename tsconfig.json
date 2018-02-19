@@ -5,6 +5,7 @@
     "noUnusedParameters": true,
     "sourceMap": true,
     "typeRoots": ["node_modules/@types"],
+    "esModuleInterop": true,
     "module": "commonjs",
     "target": "es2017",
     "lib": ["es2017"]
