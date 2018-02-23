@@ -5,11 +5,11 @@ console.log(
 );
 
 const localPackageJSON = require(`${process.env.INIT_CWD}/package`);
-const toolingPackageJSON = require("./package.json");
+const devDependencies = require("./devDependencies.json");
 
 localPackageJSON.devDependencies = {
   ...localPackageJSON.devDependencies,
-  ...toolingPackageJSON.devDependencies
+  ...devDependencies
 };
 
 fs.writeFileSync(

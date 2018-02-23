@@ -16,10 +16,5 @@
   "bugs": {
     "url": "https://github.com/GraphEngineering/typescript-tooling/issues"
   },
-  "homepage": "https://github.com/GraphEngineering/typescript-tooling#readme",
-  "devDependencies": {
-    "tslint": "^5.9.1",
-    "tslint-config-prettier": "^1.7.0",
-    "typescript": "^2.7.1"
-  }
+  "homepage": "https://github.com/GraphEngineering/typescript-tooling#readme"
 }

@@ -7,8 +7,8 @@
     "typeRoots": ["node_modules/@types"],
     "esModuleInterop": true,
     "module": "commonjs",
-    "target": "es2017",
-    "lib": ["es2017"]
+    "target": "es6",
+    "lib": ["es7"]
   },
   "exclude": ["node_modules"]
 }
