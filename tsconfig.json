@@ -1,14 +1,3 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "sourceMap": true,
-    "typeRoots": ["node_modules/@types"],
-    "esModuleInterop": true,
-    "module": "commonjs",
-    "target": "es6",
-    "lib": ["es7"]
-  },
-  "exclude": ["node_modules"]
+  "extends": "./src/Config/tsconfig.json"
 }
