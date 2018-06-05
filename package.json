@@ -3,6 +3,7 @@
   "version": "1.0.5",
   "description": "This package helps to keep all of the Typescript configuration and tooling synced up between seperate projects.",
   "scripts": {
+    "test": "jest --config jest.json",
     "postinstall": "node dist/index.js"
   },
   "repository": {
@@ -27,6 +28,8 @@
     "jest": "^23.1.0",
     "ts-jest": "^22.4.6",
     "tsconfig-paths": "^3.3.2",
+    "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.13.0",
     "typescript": "^2.9.1"
   }
 }
