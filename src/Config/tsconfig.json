@@ -2,6 +2,7 @@
   "include": ["../../src/**/*"],
   "exclude": ["../../node_modules", "../../dist"],
   "compilerOptions": {
+    "outDir": "../../dist",
     "baseUrl": "../../src",
     "paths": { "~/*": ["*"] },
     "strict": true,

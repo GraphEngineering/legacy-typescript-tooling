@@ -3,7 +3,8 @@
   "version": "1.0.5",
   "description": "This package helps to keep all of the Typescript configuration and tooling synced up between seperate projects.",
   "scripts": {
-    "test": "jest --config jest.json",
+    "test": "jest",
+    "build": "tsc && cp src/Config/*.json dist/Config/",
     "postinstall": "node dist/index.js"
   },
   "repository": {
@@ -23,6 +24,7 @@
   },
   "homepage": "https://github.com/typescript-tooling#readme",
   "devDependencies": {
+    "@types/deepmerge": "^2.1.0",
     "@types/jest": "^23.0.0",
     "@types/node": "^10.3.0",
     "jest": "^23.1.0",
@@ -31,5 +33,8 @@
     "tslint": "^5.10.0",
     "tslint-config-prettier": "^1.13.0",
     "typescript": "^2.9.1"
+  },
+  "dependencies": {
+    "deepmerge": "^2.1.1"
   }
 }
