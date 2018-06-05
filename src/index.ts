@@ -1,2 +1,2 @@
 import * as fs from "fs";
-import Config from "~/Config";
+// import Config from "~/Config";
