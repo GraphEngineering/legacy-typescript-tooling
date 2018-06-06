@@ -1,4 +1,4 @@
-import { extendDefaultJestConfig } from "./index";
+import { mergeDevDependencies, extendDefaultJestConfig } from "./index";
 
 import * as Config from "~/Config";
 
@@ -10,12 +10,23 @@ import * as Config from "~/Config";
 
 describe("managing `devDependencies`", () => {
   test("user `devDependencies` are merged with defaults", () => {
-    expect(true).toBe(true);
+    const packageJSON = {
+      devDependencies: {
+        "test-package": "^1.0.0"
+      }
+    };
+
+    const mergedPackageJSON = mergeDevDependencies(packageJSON);
+
+    expect(mergedPackageJSON.devDependencies).toEqual({
+      ...Config.devDependencies,
+      ...packageJSON.devDependencies
+    });
   });
 });
 
 describe("configuring jest", () => {
-  test("user provided config is merged with defaults", () => {
+  test("user `jest.config.js` is merged with defaults", () => {
     const userConfig = {
       verbose: true,
       moduleFileExtensions: ["scss"]
