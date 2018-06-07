@@ -4,6 +4,7 @@
   "description": "This package helps to keep all of the Typescript configuration and tooling synced up between seperate projects.",
   "scripts": {
     "test": "jest",
+    "dev": "nodemon",
     "build": "tsc && cp src/Config/*.json dist/Config/",
     "postinstall": "node dist/index.js"
   },
@@ -28,12 +29,14 @@
     "@types/jest": "^23.0.0",
     "@types/node": "^10.3.0",
     "jest": "^23.1.0",
+    "nodemon": "^1.17.5",
+    "tooling": "1",
     "ts-jest": "^22.4.6",
+    "ts-node": "^6.1.0",
     "tsconfig-paths": "^3.3.2",
     "tslint": "^5.10.0",
     "tslint-config-prettier": "^1.13.0",
-    "typescript": "^2.9.1",
-    "tooling": "1"
+    "typescript": "^2.9.1"
   },
   "dependencies": {
     "deepmerge": "^2.1.1"

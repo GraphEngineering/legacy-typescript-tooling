@@ -2,6 +2,12 @@ import { mergeDevDependencies, extendDefaultJestConfig } from "./index";
 
 import * as Config from "~/Config";
 
+// jest.mock("fs");
+
+// import * as _fs from "fs";
+
+// const fs: jest.Mocked<typeof _fs> = _fs as any;
+
 // describe("configuring typescript", () => {
 //   // test("user config is merged with defaults", () => {
 
