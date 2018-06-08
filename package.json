@@ -4,6 +4,7 @@
   "description": "This package helps to keep all of the Typescript configuration and tooling synced up between seperate projects.",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
     "dev": "nodemon",
     "build": "tsc && cp src/Config/*.json dist/Config/",
     "postinstall": "node dist/index.js"

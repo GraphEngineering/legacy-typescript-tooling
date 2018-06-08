@@ -1,33 +1,37 @@
 import { mergeDevDependencies, extendDefaultJestConfig } from "./index";
-
 import * as Config from "~/Config";
 
-// jest.mock("fs");
+import * as fs from "fs";
 
-// import * as _fs from "fs";
+const mockFs: jest.Mocked<typeof fs> = fs as any;
 
-// const fs: jest.Mocked<typeof _fs> = _fs as any;
-
-// describe("configuring typescript", () => {
-//   // test("user config is merged with defaults", () => {
-
-//   // });
-// });
+jest.mock("fs");
 
 describe("managing `devDependencies`", () => {
   test("user `devDependencies` are merged with defaults", () => {
-    const packageJSON = {
+    const userPackageJSON = {
+      name: "test-project",
       devDependencies: {
         "test-package": "^1.0.0"
       }
     };
 
-    const mergedPackageJSON = mergeDevDependencies(packageJSON);
+    const mergedPackedJSON = JSON.stringify(
+      {
+        ...Config.devDependencies,
+        ...userPackageJSON.devDependencies
+      },
+      null,
+      2
+    );
 
-    expect(mergedPackageJSON.devDependencies).toEqual({
-      ...Config.devDependencies,
-      ...packageJSON.devDependencies
-    });
+    mockFs.readFileSync.mockReturnValue(
+      new Buffer(JSON.stringify(userPackageJSON))
+    );
+
+    mockFs.writeFileSync = jest.fn();
+
+    expect(mockFs.writeFileSync.mock.calls[0][0]).toEqual(mergedPackedJSON);
   });
 });
 
