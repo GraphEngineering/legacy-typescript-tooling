@@ -1,14 +1,14 @@
-import { mergeDevDependencies, extendDefaultJestConfig } from "./index";
-import * as Config from "~/Config";
-
 import * as fs from "fs";
+
+import { main, extendDefaultJestConfig } from "./index";
+import * as Config from "~/Config";
 
 const mockFs: jest.Mocked<typeof fs> = fs as any;
 
 jest.mock("fs");
 
 describe("managing `devDependencies`", () => {
-  test("user `devDependencies` are merged with defaults", () => {
+  test("merges user `devDependencies` with defaults", () => {
     const userPackageJSON = {
       name: "test-project",
       devDependencies: {
@@ -16,27 +16,28 @@ describe("managing `devDependencies`", () => {
       }
     };
 
-    const mergedPackedJSON = JSON.stringify(
-      {
+    const mergedPackageJSON = {
+      ...userPackageJSON,
+      devDependencies: {
         ...Config.devDependencies,
         ...userPackageJSON.devDependencies
-      },
-      null,
-      2
-    );
+      }
+    };
 
     mockFs.readFileSync.mockReturnValue(
-      new Buffer(JSON.stringify(userPackageJSON))
+      new Buffer(JSON.stringify(mergedPackageJSON))
     );
 
-    mockFs.writeFileSync = jest.fn();
+    main();
 
-    expect(mockFs.writeFileSync.mock.calls[0][0]).toEqual(mergedPackedJSON);
+    expect(mockFs.writeFileSync.mock.calls[0][1]).toEqual(
+      JSON.stringify(mergedPackageJSON, null, 2)
+    );
   });
 });
 
 describe("configuring jest", () => {
-  test("user `jest.config.js` is merged with defaults", () => {
+  test("merges `jest.config.js` with defaults", () => {
     const userConfig = {
       verbose: true,
       moduleFileExtensions: ["scss"]
