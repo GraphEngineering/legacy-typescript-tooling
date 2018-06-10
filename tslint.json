@@ -1,5 +1,5 @@
 {
-  "extends": "./src/Config/tslint.json",
+  "extends": "./src/DefaultConfigs/tslint.json",
   "rules": {
     "no-console": false
   }

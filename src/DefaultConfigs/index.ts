@@ -1,6 +1,4 @@
-import TSConfig from "./tsconfig.json";
-import TSLint from "./tslint.json";
-import jest from "./jest.json";
 import devDependencies from "./devDependencies.json";
+import jest from "./jest.json";
 
-export { TSConfig, TSLint, jest, devDependencies };
+export { devDependencies, jest };
