@@ -1,13 +1,24 @@
 import * as fs from "fs";
 
-import { main, extendDefaultJestConfig } from "./index";
+import {
+  configureDevDependencies,
+  configureJest,
+  extendDefaultJestConfig
+} from "./index";
+
 import * as Config from "~/Config";
 
 const mockFs: jest.Mocked<typeof fs> = fs as any;
 
 jest.mock("fs");
 
-describe("managing `devDependencies`", () => {
+beforeEach(() => {
+  mockFs.readFileSync.mockClear();
+  mockFs.writeFileSync.mockClear();
+  mockFs.existsSync.mockClear();
+});
+
+describe("configuring `devDependencies`", () => {
   test("merges user `devDependencies` with defaults", () => {
     const userPackageJSON = {
       name: "test-project",
@@ -25,11 +36,10 @@ describe("managing `devDependencies`", () => {
     };
 
     mockFs.readFileSync.mockReturnValue(
-      new Buffer(JSON.stringify(mergedPackageJSON))
+      new Buffer(JSON.stringify(mergedPackageJSON, null, 2))
     );
 
-    main();
-
+    configureDevDependencies();
     expect(mockFs.writeFileSync.mock.calls[0][1]).toEqual(
       JSON.stringify(mergedPackageJSON, null, 2)
     );
@@ -50,5 +60,20 @@ describe("configuring jest", () => {
       ...Config.jest.moduleFileExtensions,
       ...userConfig.moduleFileExtensions
     ]);
+  });
+
+  test("writes the correct `jest.config.js` one doesn't exist", () => {
+    const jestConfigJS = `module.exports = require("./dist").extendDefaultJestConfig({});`;
+
+    mockFs.existsSync.mockReturnValue(false);
+    mockFs.readFileSync.mockReturnValue(jestConfigJS);
+
+    configureJest();
+    expect(mockFs.writeFileSync.mock.calls[0][1]).toEqual(jestConfigJS);
+  });
+
+  test("does not write default `jest.config.js` if one exists", () => {
+    mockFs.existsSync.mockReturnValue(true);
+    expect(mockFs.writeFileSync).not.toBeCalled();
   });
 });
