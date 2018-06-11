@@ -10,6 +10,9 @@ export const copyDevDependenciesToPackageJSON = () => {
     fs.readFileSync(packageJSONPath).toString()
   );
 
+  console.log(packageJSONPath);
+  console.log(packageJSONConfig);
+
   const packageJSONConfigWithDevDependencies = {
     ...packageJSONConfig,
     devDependencies: merge(
