@@ -1,1 +1,1 @@
-module.exports = require("./dist").extendDefaultJestConfig({});
+module.exports = require("./dist").extendWithDefaultJestConfig({});
