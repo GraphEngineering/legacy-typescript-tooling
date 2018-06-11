@@ -1,9 +1,13 @@
 {
-  "include": ["../../src/**/*"],
-  "exclude": ["../../node_modules", "../../dist", "../../src/**/*.spec.*"],
+  "include": ["../../../../src/**/*"],
+  "exclude": [
+    "../../../../node_modules",
+    "../../../../dist",
+    "../../../../src/**/*.spec.*"
+  ],
   "compilerOptions": {
-    "outDir": "../../dist",
-    "baseUrl": "../../src",
+    "outDir": "../../../../dist",
+    "baseUrl": "../../../../src",
     "paths": { "~/*": ["*"] },
     "strict": true,
     "noUnusedLocals": true,
