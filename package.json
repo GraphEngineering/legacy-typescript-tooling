@@ -1,6 +1,6 @@
 {
   "name": "typescript-tooling",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "This package helps keep TypeScript configuration and tooling synced up between seperate projects.",
   "repository": {
     "type": "git",
