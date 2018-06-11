@@ -1,18 +1,20 @@
 import * as fs from "fs";
+import * as path from "path";
 
 import {
   copyDevDependenciesToPackageJSON,
-  createOrExtendTSConfigJSON,
-  createOrExtendTSLintJSON,
-  createJestConfigJS,
-  extendDefaultJestConfig
+  createOrExtendTSConfigFileJSON,
+  createDefaultJestConfigJS,
+  extendWithDefaultJestConfig
 } from "./configureProject";
 
-import * as Config from "./DefaultConfigs";
+import * as DefaultConfigs from "./DefaultConfigs";
 
 const mockFs: jest.Mocked<typeof fs> = fs as any;
+const mockPath: jest.Mocked<typeof fs> = path as any;
 
 jest.mock("fs");
+jest.mock("path");
 
 beforeEach(() => {
   mockFs.readFileSync.mockClear();
@@ -31,7 +33,7 @@ test("copies default `devDependencies` into the user's `package.json`", () => {
   const mergedPackageJSON = {
     ...userPackageJSON,
     devDependencies: {
-      ...Config.devDependencies,
+      ...DefaultConfigs.devDependencies,
       ...userPackageJSON.devDependencies
     }
   };
@@ -47,100 +49,78 @@ test("copies default `devDependencies` into the user's `package.json`", () => {
   );
 });
 
-describe("configuring TypeScript", () => {
-  test("creates `tsconfig.json` when the file isn't found", () => {
-    const defaultTSConfigJSON = JSON.stringify({ extends: "./blah" }, null, 2);
+describe("creating and extending TypeScript or TSLint config files", () => {
+  const configFileJSONFileName = "fileName.json";
+  const configFileJSONDefaultContents = {
+    extends: `./node_modules/typescript-tooling/dist/DefaultConfigs/${configFileJSONFileName}`
+  };
 
+  test("creates `fileName.json` when one doesn't exist", () => {
     mockFs.existsSync.mockReturnValue(false);
 
-    createOrExtendTSConfigJSON();
+    createOrExtendTSConfigFileJSON(configFileJSONFileName);
 
-    expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(defaultTSConfigJSON);
+    expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(
+      JSON.stringify(configFileJSONDefaultContents, null, 2)
+    );
   });
 
-  test("extends `tsconfig.json` when the file is found", () => {
-    const existingTSConfig = {
+  test("extends `fileName.json` when one exists", () => {
+    const configFileJSONExistingContents = {
       compilerOptions: { strict: true }
     };
 
     mockFs.existsSync.mockReturnValue(true);
     mockFs.readFileSync.mockReturnValue(
-      JSON.stringify(existingTSConfig, null, 2)
+      JSON.stringify(configFileJSONExistingContents, null, 2)
     );
 
-    const extendedTSConfig = { extends: "./blah", ...existingTSConfig };
+    const configFileJSONContentsWithExtends = {
+      ...configFileJSONDefaultContents,
+      ...configFileJSONExistingContents
+    };
 
-    createOrExtendTSConfigJSON();
+    createOrExtendTSConfigFileJSON(configFileJSONFileName);
 
     expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(
-      JSON.stringify(extendedTSConfig, null, 2)
+      JSON.stringify(configFileJSONContentsWithExtends, null, 2)
     );
   });
 });
 
-describe("configuring TSLint", () => {
-  test("creates `tslint.json` when the file isn't found", () => {
-    const defaultTSLintJSON = JSON.stringify({ extends: "./blah" }, null, 2);
+describe("creating a Jest config file and extending the default settings", () => {
+  test("creates `jest.config.js` when one doesn't exist", () => {
+    const jestConfigJSContents = `module.exports = require("typescript-tooling").extendWithDefaultJestConfig({});\n`;
 
     mockFs.existsSync.mockReturnValue(false);
 
-    createOrExtendTSLintJSON();
+    createDefaultJestConfigJS();
 
-    expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(defaultTSLintJSON);
+    expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(jestConfigJSContents);
   });
 
-  test("extends `tslint.json` when the file is found", () => {
-    const existingTSLint = {
-      compilerOptions: { strict: true }
-    };
-
+  test("skips `jest.config.js` creation when one exists", () => {
     mockFs.existsSync.mockReturnValue(true);
-    mockFs.readFileSync.mockReturnValue(
-      JSON.stringify(existingTSLint, null, 2)
-    );
 
-    const extendedTSLint = { extends: "./blah", ...existingTSLint };
+    createDefaultJestConfigJS();
 
-    createOrExtendTSLintJSON();
-
-    expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(
-      JSON.stringify(extendedTSLint, null, 2)
-    );
+    expect(mockFs.writeFileSync).not.toBeCalled();
   });
-});
 
-describe("configuring Jest", () => {
-  test("merges `jest.config.js` with defaults", () => {
-    const userConfig = {
+  test("extends `jest.config.js` with defaults", () => {
+    const jestConfigJSExistingContents = {
       verbose: true,
       moduleFileExtensions: ["scss"]
     };
 
-    const mergedConfig = extendDefaultJestConfig(userConfig);
+    const jestConfigJSWithExtensions = extendWithDefaultJestConfig(
+      jestConfigJSExistingContents
+    );
 
-    expect(mergedConfig.verbose).toBe(true);
-    expect(mergedConfig.moduleFileExtensions).toEqual([
-      ...Config.jestConfig.moduleFileExtensions,
-      ...userConfig.moduleFileExtensions
+    expect(jestConfigJSWithExtensions.verbose).toBe(true);
+    expect(jestConfigJSWithExtensions.moduleFileExtensions).toEqual([
+      ...DefaultConfigs.jestConfig.moduleFileExtensions,
+      ...jestConfigJSExistingContents.moduleFileExtensions
     ]);
-  });
-
-  test("creates the correct `jest.config.js` one doesn't exist", () => {
-    const jestConfigJS = "source code for `jest.config.js`";
-
-    mockFs.existsSync.mockReturnValue(false);
-    mockFs.readFileSync.mockReturnValue(jestConfigJS);
-
-    createJestConfigJS();
-
-    expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(jestConfigJS);
-  });
-
-  test("does not create default `jest.config.js` if one exists", () => {
-    mockFs.existsSync.mockReturnValue(true);
-
-    createJestConfigJS();
-
-    expect(mockFs.writeFileSync).not.toBeCalled();
   });
 });

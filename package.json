@@ -2,12 +2,12 @@
   "name": "typescript-tooling",
   "version": "1.0.5",
   "description": "This package helps to keep all of the Typescript configuration and tooling synced up between seperate projects.",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
     "dev": "nodemon",
-    "build": "tsc && cp src/Config/*.json dist/Config/",
-    "postinstall": "node dist/index.js"
+    "build": "tsc && cp src/DefaultConfigs/*.json dist/DefaultConfigs/"
   },
   "repository": {
     "type": "git",

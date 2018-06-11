@@ -1,66 +1,62 @@
 import * as fs from "fs";
+import * as path from "path";
 import merge from "deepmerge";
 
-import * as Config from "./DefaultConfigs";
-
-const PACKAGE_JSON_PATH = "../../package.json";
+import * as DefaultConfigs from "./DefaultConfigs";
 
 export const copyDevDependenciesToPackageJSON = () => {
-  const packageJSON = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH).toString());
+  const packageJSONPath = pathForConfigFile("package.json");
+  const packageJSONConfig = JSON.parse(
+    fs.readFileSync(packageJSONPath).toString()
+  );
 
-  const packageJSONMerged = {
-    ...packageJSON,
-    devDependencies: merge(Config.devDependencies, packageJSON.devDependencies)
+  const packageJSONConfigWithDevDependencies = {
+    ...packageJSONConfig,
+    devDependencies: merge(
+      DefaultConfigs.devDependencies,
+      packageJSONConfig.devDependencies
+    )
   };
 
   fs.writeFileSync(
-    PACKAGE_JSON_PATH,
-    JSON.stringify(packageJSONMerged, null, 2)
+    packageJSONPath,
+    JSON.stringify(packageJSONConfigWithDevDependencies, null, 2)
   );
 };
 
-export const createOrExtendTSConfigJSON = () => {
-  const TSConfig = fs.existsSync("./blah/tsconfig.json")
-    ? JSON.parse(fs.readFileSync("./blah/tsconfig.json").toString())
+export const createOrExtendTSConfigFileJSON = (fileName: string) => {
+  const TSConfigFilePath = pathForConfigFile(fileName);
+
+  const TSConfigFileSettings = fs.existsSync(TSConfigFilePath)
+    ? JSON.parse(fs.readFileSync(TSConfigFilePath).toString())
     : {};
 
-  const TSConfigWithExtends = {
-    extends: "./blah",
-    ...TSConfig
+  const TSConfigFileSettingsWithExtends = {
+    extends: `./node_modules/typescript-tooling/dist/DefaultConfigs/${fileName}`,
+    ...TSConfigFileSettings
   };
 
   fs.writeFileSync(
-    "./blah/tsconfig.json",
-    JSON.stringify(TSConfigWithExtends, null, 2)
+    TSConfigFilePath,
+    JSON.stringify(TSConfigFileSettingsWithExtends, null, 2)
   );
 };
 
-export const createOrExtendTSLintJSON = () => {
-  const TSConfig = fs.existsSync("./blah/tsconfig.json")
-    ? JSON.parse(fs.readFileSync("./blah/tsconfig.json").toString())
-    : {};
+export const createDefaultJestConfigJS = () => {
+  const jestConfigJSPath = pathForConfigFile("jest.config.js");
 
-  const TSConfigWithExtends = {
-    extends: "./blah",
-    ...TSConfig
-  };
-
-  fs.writeFileSync(
-    "./blah/tsconfig.json",
-    JSON.stringify(TSConfigWithExtends, null, 2)
-  );
-};
-
-export const createJestConfigJS = () => {
-  if (fs.existsSync("../jest.config.js")) {
+  if (fs.existsSync(jestConfigJSPath)) {
     return;
   }
 
   fs.writeFileSync(
-    "../jest.config.js",
-    fs.readFileSync("./DefaultConfigs/jest.config.js")
+    jestConfigJSPath,
+    `module.exports = require("typescript-tooling").extendWithDefaultJestConfig({});\n`
   );
 };
 
-export const extendDefaultJestConfig = (config: any): any =>
-  merge(Config.jestConfig, config);
+export const extendWithDefaultJestConfig = (existingJestConfig: any): any =>
+  merge(DefaultConfigs.jestConfig, existingJestConfig);
+
+const pathForConfigFile = (fileName: string): string =>
+  path.join(path.dirname(fs.realpathSync(__filename)), `../../../${fileName}`);
