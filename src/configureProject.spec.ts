@@ -20,7 +20,7 @@ beforeEach(() => {
   mockFs.existsSync.mockClear();
 });
 
-test("inserts default `devDependencies` into the user's `package.json`", () => {
+test("copies default `devDependencies` into the user's `package.json`", () => {
   const userPackageJSON = {
     name: "test-project",
     devDependencies: {
@@ -120,7 +120,7 @@ describe("configuring Jest", () => {
 
     expect(mergedConfig.verbose).toBe(true);
     expect(mergedConfig.moduleFileExtensions).toEqual([
-      ...Config.jest.moduleFileExtensions,
+      ...Config.jestConfig.moduleFileExtensions,
       ...userConfig.moduleFileExtensions
     ]);
   });

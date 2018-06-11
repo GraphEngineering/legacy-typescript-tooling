@@ -1,4 +1,4 @@
 import devDependencies from "./devDependencies.json";
-import jest from "./jest.json";
+import jestConfig from "./jest.json";
 
-export { devDependencies, jest };
+export { devDependencies, jestConfig };

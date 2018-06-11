@@ -63,4 +63,4 @@ export const createJestConfigJS = () => {
 };
 
 export const extendDefaultJestConfig = (config: any): any =>
-  merge(Config.jest, config);
+  merge(Config.jestConfig, config);
