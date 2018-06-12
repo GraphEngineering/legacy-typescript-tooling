@@ -7,9 +7,7 @@ import {
 import { default as chalk } from "chalk";
 
 console.info(
-  chalk.bold.green(
-    "Making sure TypeScript, TSLint, and Jest are ready-to-go..."
-  )
+  chalk.green("Making sure TypeScript, TSLint, and Jest are ready-to-go...")
 );
 
 copyDevDependenciesToPackageJSON();
