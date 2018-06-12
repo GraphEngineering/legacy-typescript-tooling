@@ -26,6 +26,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "dev": "nodemon",
+    "sync-configs": "node syncConfigs.js",
     "build": "tsc && cp src/DefaultConfigs/*.json dist/DefaultConfigs/",
     "postinstall": "node dist/executeConfigurationSteps.js"
   },
