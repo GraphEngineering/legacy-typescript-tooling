@@ -45,6 +45,7 @@
     "tslint-config-prettier": "^1.13.0"
   },
   "dependencies": {
+    "chalk": "^2.4.1",
     "deepmerge": "^2.1.1"
   }
 }
