@@ -6,21 +6,21 @@ import * as DefaultConfigs from "./DefaultConfigs";
 
 export const copyDevDependenciesToPackageJSON = () => {
   const packageJSONPath = pathForConfigFile("package.json");
-  const packageJSONConfig = JSON.parse(
+  const packageJSONContents = JSON.parse(
     fs.readFileSync(packageJSONPath).toString()
   );
 
-  const packageJSONConfigWithDevDependencies = {
-    ...packageJSONConfig,
+  const packageJSONContentsWithDevDependencies = {
+    ...packageJSONContents,
     devDependencies: merge(
-      packageJSONConfig.devDependencies || {},
+      packageJSONContents.devDependencies || {},
       DefaultConfigs.devDependencies
     )
   };
 
   fs.writeFileSync(
     packageJSONPath,
-    JSON.stringify(packageJSONConfigWithDevDependencies, null, 2)
+    JSON.stringify(packageJSONContentsWithDevDependencies, null, 2)
   );
 };
 
