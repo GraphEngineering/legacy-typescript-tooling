@@ -79,7 +79,7 @@ export const createDefaultJestConfigJS = () => {
   fs.writeFileSync(jestConfigJSPath, JEST_CONFIG_FILE_CONTENTS);
 
   console.info(
-    `${log.checkMark} created ${log.fileName("jest.config.js")}${log.code(
+    `${log.checkMark} Created ${log.fileName("jest.config.js")}${log.code(
       JEST_CONFIG_FILE_CONTENTS
     )}`
   );
