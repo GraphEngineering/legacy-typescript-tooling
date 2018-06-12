@@ -49,8 +49,14 @@ export const createOrExtendTSConfigFileJSON = (fileName: string) => {
     ? ["Extended", JSON.parse(fs.readFileSync(TSConfigFilePath).toString())]
     : ["Created", {}];
 
+  const extendsPath = `${DEFAULT_CONFIGS_PATH}${fileName}`;
+
+  if (TSConfigFileContents.extends === extendsPath) {
+    return;
+  }
+
   const TSConfigFileContentsWithExtends = {
-    extends: `${DEFAULT_CONFIGS_PATH}${fileName}`,
+    extends: extendsPath,
     ...TSConfigFileContents
   };
 

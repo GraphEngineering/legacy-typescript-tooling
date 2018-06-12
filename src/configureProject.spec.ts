@@ -86,6 +86,22 @@ describe("creating and extending TypeScript or TSLint config files", () => {
       JSON.stringify(configFileJSONContentsWithExtends, null, 2)
     );
   });
+
+  test("skips `fileName.json` extension when already extended", () => {
+    const configFileJSONExistingContents = {
+      extends: `./node_modules/typescript-tooling/dist/DefaultConfigs/${configFileJSONFileName}`,
+      compilerOptions: { strict: true }
+    };
+
+    mockFs.existsSync.mockReturnValue(true);
+    mockFs.readFileSync.mockReturnValue(
+      JSON.stringify(configFileJSONExistingContents, null, 2)
+    );
+
+    createOrExtendTSConfigFileJSON(configFileJSONFileName);
+
+    expect(mockFs.writeFileSync).not.toBeCalled();
+  });
 });
 
 describe("creating a Jest config file and extending the default settings", () => {
