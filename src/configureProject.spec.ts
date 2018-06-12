@@ -22,31 +22,47 @@ beforeEach(() => {
   mockFs.existsSync.mockClear();
 });
 
-test("copies default `devDependencies` into the user's `package.json`", () => {
-  const userPackageJSON = {
-    name: "test-project",
-    devDependencies: {
-      "test-package": "^1.0.0"
-    }
-  };
+describe("copying `devDependencies`", () => {
+  test("copies `devDependencies` defaults into user's `package.json`", () => {
+    const userPackageJSONContents = {
+      name: "test-project",
+      devDependencies: {
+        "test-package": "^1.0.0"
+      }
+    };
 
-  const mergedPackageJSON = {
-    ...userPackageJSON,
-    devDependencies: {
-      ...DefaultConfigs.devDependencies,
-      ...userPackageJSON.devDependencies
-    }
-  };
+    const mergedPackageJSONContents = {
+      ...userPackageJSONContents,
+      devDependencies: {
+        ...userPackageJSONContents.devDependencies,
+        ...DefaultConfigs.devDependencies
+      }
+    };
 
-  mockFs.readFileSync.mockReturnValue(
-    new Buffer(JSON.stringify(mergedPackageJSON, null, 2))
-  );
+    mockFs.readFileSync.mockReturnValue(
+      new Buffer(JSON.stringify(userPackageJSONContents, null, 2))
+    );
 
-  copyDevDependenciesToPackageJSON();
+    copyDevDependenciesToPackageJSON();
 
-  expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(
-    JSON.stringify(mergedPackageJSON, null, 2)
-  );
+    expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(
+      JSON.stringify(mergedPackageJSONContents, null, 2)
+    );
+  });
+
+  test("skips `devDependencies` copying when already using defaults", () => {
+    const userPackageJSONContents = {
+      devDependencies: DefaultConfigs.devDependencies
+    };
+
+    mockFs.readFileSync.mockReturnValue(
+      new Buffer(JSON.stringify(userPackageJSONContents, null, 2))
+    );
+
+    copyDevDependenciesToPackageJSON();
+
+    expect(mockFs.writeFileSync).not.toBeCalled();
+  });
 });
 
 describe("creating and extending TypeScript or TSLint config files", () => {

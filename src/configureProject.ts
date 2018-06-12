@@ -18,6 +18,19 @@ export const copyDevDependenciesToPackageJSON = () => {
     fs.readFileSync(packageJSONPath).toString()
   );
 
+  const devDependenciesAreCorrect = Object.entries(
+    DefaultConfigs.devDependencies
+  ).reduce(
+    (foundMismatch, [packageName, version]) =>
+      foundMismatch &&
+      packageJSONContents.devDependencies[packageName] === version,
+    true
+  );
+
+  if (devDependenciesAreCorrect) {
+    return;
+  }
+
   const packageJSONContentsWithDevDependencies = {
     ...packageJSONContents,
     devDependencies: merge(
