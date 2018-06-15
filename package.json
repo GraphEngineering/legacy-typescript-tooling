@@ -19,7 +19,11 @@
     "url": "https://github.com/cruhl/typescript-tooling/issues"
   },
   "main": "dist/index.js",
+  "bin": {
+    "tst": "bin/cli.js"
+  },
   "files": [
+    "bin",
     "dist"
   ],
   "scripts": {
@@ -45,6 +49,7 @@
     "tslint-config-prettier": "^1.13.0"
   },
   "dependencies": {
+    "caporal": "^0.10.0",
     "chalk": "^2.4.1",
     "deepmerge": "^2.1.1"
   }

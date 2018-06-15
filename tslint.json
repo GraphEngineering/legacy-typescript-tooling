@@ -3,7 +3,6 @@
   "rules": {
     "no-submodule-imports": [true, "~"],
     "ordered-imports": false,
-    "no-console": false,
     "no-implicit-dependencies": false,
     "object-literal-sort-keys": false,
     "interface-name": false,
