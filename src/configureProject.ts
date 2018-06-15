@@ -21,8 +21,8 @@ export const copyDevDependenciesToPackageJSON = () => {
   const devDependenciesAreCorrect = Object.entries(
     DefaultConfigs.devDependencies
   ).reduce(
-    (foundMismatch, [packageName, version]) =>
-      foundMismatch &&
+    (noMismatches, [packageName, version]) =>
+      noMismatches &&
       packageJSONContents.devDependencies[packageName] === version,
     true
   );
