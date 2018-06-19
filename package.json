@@ -32,7 +32,7 @@
     "dev": "nodemon",
     "sync-configs": "node syncConfigs.js",
     "build": "tsc && cp src/DefaultConfigs/*.json dist/DefaultConfigs/",
-    "postinstall": "node dist/executeConfigurationSteps.js"
+    "clean": "rimraf dist"
   },
   "devDependencies": {
     "@types/deepmerge": "^2.1.0",
@@ -40,13 +40,14 @@
     "@types/node": "^10.3.0",
     "jest": "^23.1.0",
     "nodemon": "^1.17.5",
+    "rimraf": "^2.6.2",
     "tooling": "1",
     "ts-jest": "^22.4.6",
     "ts-node": "^6.1.0",
     "tsconfig-paths": "^3.3.2",
-    "typescript": "^2.9.1",
     "tslint": "^5.10.0",
-    "tslint-config-prettier": "^1.13.0"
+    "tslint-config-prettier": "^1.13.0",
+    "typescript": "^2.9.1"
   },
   "dependencies": {
     "caporal": "^0.10.0",
