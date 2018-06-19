@@ -1,21 +1,17 @@
 import * as fs from "fs";
-import * as path from "path";
-
 import merge from "deepmerge";
 
-import * as log from "./log";
 import * as DefaultConfigs from "./DefaultConfigs";
 
-const DEFAULT_CONFIGS_PATH =
-  "./node_modules/typescript-tooling/dist/DefaultConfigs/";
+export const enum ACTION {
+  NONE,
+  EXTENDED = "Extended",
+  CREATED = "Created"
+}
 
-const JEST_CONFIG_FILE_NAME = "jest.config.js";
-const JEST_CONFIG_FILE_CONTENTS = `module.exports = require("typescript-tooling").extendWithDefaultJestConfig({});\n`;
-
-export const copyDevDependenciesToPackageJSON = () => {
-  const packageJSONPath = pathForConfigFile("package.json");
+export const copyDevDependenciesToPackageJSON = (): ACTION => {
   const packageJSONContents = JSON.parse(
-    fs.readFileSync(packageJSONPath).toString()
+    fs.readFileSync("package.json").toString()
   );
 
   const devDependenciesAreCorrect = Object.entries(
@@ -28,84 +24,65 @@ export const copyDevDependenciesToPackageJSON = () => {
   );
 
   if (devDependenciesAreCorrect) {
-    return;
+    return ACTION.NONE;
   }
 
   const packageJSONContentsWithDevDependencies = {
     ...packageJSONContents,
     devDependencies: merge(
-      packageJSONContents.devDependencies || {},
-      DefaultConfigs.devDependencies
+      DefaultConfigs.devDependencies,
+      packageJSONContents.devDependencies || {}
     )
   };
 
   fs.writeFileSync(
-    packageJSONPath,
+    "package.json",
     JSON.stringify(packageJSONContentsWithDevDependencies, null, 2)
   );
 
-  console.info(
-    `${log.checkMark} Copied default ${log.fileName(
-      "devDependencies"
-    )} to ${log.fileName("package.json")}${log.code(
-      JSON.stringify(DefaultConfigs.devDependencies, null, 2)
-    )}`
-  );
+  return ACTION.EXTENDED;
 };
 
-export const createOrExtendTSConfigFileJSON = (fileName: string) => {
-  const TSConfigFilePath = pathForConfigFile(fileName);
+export const createOrExtendTSConfigFileJSON = (
+  fileName: string,
+  extendsValue: string
+): ACTION => {
+  const action = fs.existsSync(fileName) ? ACTION.EXTENDED : ACTION.CREATED;
 
-  const [consoleInfoVerb, TSConfigFileContents] = fs.existsSync(
-    TSConfigFilePath
-  )
-    ? ["Extended", JSON.parse(fs.readFileSync(TSConfigFilePath).toString())]
-    : ["Created", {}];
+  const TSConfigFileContents =
+    action === ACTION.EXTENDED
+      ? JSON.parse(fs.readFileSync(fileName).toString())
+      : {};
 
-  const extendsPath = `${DEFAULT_CONFIGS_PATH}${fileName}`;
-
-  if (TSConfigFileContents.extends === extendsPath) {
-    return;
+  if (TSConfigFileContents.extends) {
+    return ACTION.NONE;
   }
 
   const TSConfigFileContentsWithExtends = {
-    extends: extendsPath,
+    extends: extendsValue,
     ...TSConfigFileContents
   };
 
-  const TSConfigFileSettingsWithExtendsJSON = JSON.stringify(
-    TSConfigFileContentsWithExtends,
-    null,
-    2
+  fs.writeFileSync(
+    fileName,
+    JSON.stringify(TSConfigFileContentsWithExtends, null, 2)
   );
 
-  fs.writeFileSync(TSConfigFilePath, TSConfigFileSettingsWithExtendsJSON);
-
-  console.info(
-    `${log.checkMark} ${consoleInfoVerb} ${log.fileName(fileName)}${log.code(
-      TSConfigFileSettingsWithExtendsJSON
-    )}`
-  );
+  return action;
 };
 
-export const createDefaultJestConfigJS = () => {
-  const jestConfigJSPath = pathForConfigFile(JEST_CONFIG_FILE_NAME);
-
-  if (fs.existsSync(jestConfigJSPath)) {
-    return;
+export const createDefaultJestConfigJS = (): ACTION => {
+  if (fs.existsSync("jest.config.js")) {
+    return ACTION.NONE;
   }
 
-  fs.writeFileSync(jestConfigJSPath, JEST_CONFIG_FILE_CONTENTS);
-
-  console.info(
-    `${log.checkMark} Created ${log.fileName("jest.config.js")}${log.code(
-      JEST_CONFIG_FILE_CONTENTS
-    )}`
+  fs.writeFileSync(
+    "jest.config.js",
+    `module.exports = require("typescript-tooling").extendWithDefaultJestConfig({});\n`
   );
+
+  return ACTION.CREATED;
 };
 
 export const extendWithDefaultJestConfig = (existingJestConfig: any): any =>
   merge(DefaultConfigs.jestConfig, existingJestConfig);
-
-const pathForConfigFile = (fileName: string): string =>
-  path.join(path.dirname(fs.realpathSync(__filename)), `../../../${fileName}`);

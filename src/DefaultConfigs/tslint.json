@@ -7,11 +7,6 @@
     "object-literal-sort-keys": false,
     "interface-name": false,
     "variable-name": [true, "allow-leading-underscore", "allow-pascal-case"],
-    "no-unused-variable": [
-      true,
-      {
-        "ignore-pattern": "^_"
-      }
-    ]
+    "no-unused-variable": [true, { "ignore-pattern": "^_" }]
   }
 }

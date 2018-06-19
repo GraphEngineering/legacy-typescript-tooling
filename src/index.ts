@@ -1,13 +1,21 @@
 export { extendWithDefaultJestConfig } from "./configureProject";
 
-// import {
-//   copyDevDependenciesToPackageJSON,
-//   createOrExtendTSConfigFileJSON,
-//   createDefaultJestConfigJS
-// } from "./configureProject";
-
 import * as cli from "caporal";
-// import { default as chalk } from "chalk";
+import { default as chalk } from "chalk";
+
+import {
+  ACTION,
+  copyDevDependenciesToPackageJSON,
+  createOrExtendTSConfigFileJSON,
+  createDefaultJestConfigJS
+} from "./configureProject";
+
+const enum TASKS {
+  DEV_DEPENDENCIES = "devDependencies",
+  TS_CONFIG = "tsconfig",
+  TS_LINT = "tslint",
+  JEST = "jest"
+}
 
 export const main = (version: string, argv: string[]) =>
   cli
@@ -24,29 +32,75 @@ export const main = (version: string, argv: string[]) =>
     .option("--jest", "Create default `jest.config.js`", cli.BOOL, null)
     .action((_args, options, logger) => {
       const configurationTasks = [
-        "devDependencies",
-        "tsconfig",
-        "tslint",
-        "jest"
+        TASKS.DEV_DEPENDENCIES,
+        TASKS.TS_CONFIG,
+        TASKS.TS_LINT,
+        TASKS.JEST
       ].filter(
         taskName =>
           options[taskName] === true ||
           (options.all && options[taskName] !== false)
       );
 
-      logger.info(`${configurationTasks}`);
+      if (!configurationTasks.length) {
+        logger.info(chalk.dim("Nothing to do..."));
+        return;
+      }
+
+      logger.info(chalk.dim("Setting up your TypeScript environment..."));
+
+      if (configurationTasks.includes(TASKS.DEV_DEPENDENCIES)) {
+        const action = copyDevDependenciesToPackageJSON();
+
+        if (action === ACTION.EXTENDED) {
+          logger.info(
+            `${log.checkMark} Extended ${log.fileName(
+              "package.json"
+            )} with default \`devDependencies\`"`
+          );
+        }
+      }
+
+      if (configurationTasks.includes(TASKS.TS_CONFIG)) {
+        const fileName = "tsconfig.json";
+        const action = createOrExtendTSConfigFileJSON(
+          fileName,
+          `./node_modules/typescript-tooling/dist/DefaultConfigs/${fileName}`
+        );
+
+        if (action !== ACTION.NONE) {
+          logger.info(`${log.checkMark} ${action} ${log.fileName(fileName)}`);
+        }
+      }
+
+      if (configurationTasks.includes(TASKS.TS_LINT)) {
+        const fileName = "tslint.json";
+        const action = createOrExtendTSConfigFileJSON(
+          fileName,
+          "typescript-tooling"
+        );
+
+        if (action !== ACTION.NONE) {
+          logger.info(`${log.checkMark} ${action} ${log.fileName(fileName)}`);
+        }
+      }
+
+      if (configurationTasks.includes(TASKS.JEST)) {
+        const action = createDefaultJestConfigJS();
+
+        if (action === ACTION.CREATED) {
+          logger.info(
+            `${log.checkMark} Created ${log.fileName("jest.config.js")}`
+          );
+        }
+      }
+
+      logger.info(chalk.bold.green("All set!"));
     })
     .parse(argv);
 
-// console.info(
-// 	chalk.green("Making sure TypeScript, TSLint, and Jest are ready-to-go...")
-// );
-
-// copyDevDependenciesToPackageJSON();
-
-// createOrExtendTSConfigFileJSON("tsconfig.json");
-// createOrExtendTSConfigFileJSON("tslint.json");
-
-// createDefaultJestConfigJS();
-
-// console.info(chalk.bold.green("All set!"));
+const log = {
+  checkMark: chalk.green("✓"),
+  fileName: (name: string) => chalk.blue(name),
+  code: (name: string) => `\n${chalk.dim(name)}`
+};
