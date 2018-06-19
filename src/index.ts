@@ -56,7 +56,7 @@ export const main = (version: string, argv: string[]) =>
           logger.info(
             `${log.checkMark} Extended ${log.fileName(
               "package.json"
-            )} with default \`devDependencies\`"`
+            )} with default \`devDependencies\``
           );
         }
       }
