@@ -77,7 +77,7 @@ export const main = (version: string, argv: string[]) =>
         const fileName = "tslint.json";
         const action = createOrExtendTSConfigFileJSON(
           fileName,
-          "typescript-tooling"
+          "typescript-tooling/tslint"
         );
 
         if (action !== ACTION.NONE) {
