@@ -1,6 +1,6 @@
 {
   "name": "typescript-tooling",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "This package helps keep TypeScript configuration and tooling synced up between seperate projects.",
   "repository": {
     "type": "git",
@@ -24,7 +24,8 @@
   },
   "files": [
     "bin",
-    "dist"
+    "dist",
+    "tslint.json"
   ],
   "scripts": {
     "test": "jest",
