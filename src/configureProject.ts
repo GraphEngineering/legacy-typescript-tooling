@@ -3,13 +3,13 @@ import merge from "deepmerge";
 
 import * as DefaultConfigs from "./DefaultConfigs";
 
-export const enum ACTION {
+export const enum Action {
   NONE,
   EXTENDED = "Extended",
   CREATED = "Created"
 }
 
-export const copyDevDependenciesToPackageJSON = (): ACTION => {
+export const copyDevDependenciesToPackageJSON = (): Action => {
   const packageJSONContents = JSON.parse(
     fs.readFileSync("package.json").toString()
   );
@@ -24,7 +24,7 @@ export const copyDevDependenciesToPackageJSON = (): ACTION => {
   );
 
   if (devDependenciesAreCorrect) {
-    return ACTION.NONE;
+    return Action.NONE;
   }
 
   const packageJSONContentsWithDevDependencies = {
@@ -40,22 +40,22 @@ export const copyDevDependenciesToPackageJSON = (): ACTION => {
     JSON.stringify(packageJSONContentsWithDevDependencies, null, 2)
   );
 
-  return ACTION.EXTENDED;
+  return Action.EXTENDED;
 };
 
 export const createOrExtendTSConfigFileJSON = (
   fileName: string,
   extendsValue: string
-): ACTION => {
-  const action = fs.existsSync(fileName) ? ACTION.EXTENDED : ACTION.CREATED;
+): Action => {
+  const action = fs.existsSync(fileName) ? Action.EXTENDED : Action.CREATED;
 
   const TSConfigFileContents =
-    action === ACTION.EXTENDED
+    action === Action.EXTENDED
       ? JSON.parse(fs.readFileSync(fileName).toString())
       : {};
 
   if (TSConfigFileContents.extends) {
-    return ACTION.NONE;
+    return Action.NONE;
   }
 
   const TSConfigFileContentsWithExtends = {
@@ -71,9 +71,9 @@ export const createOrExtendTSConfigFileJSON = (
   return action;
 };
 
-export const createDefaultJestConfigJS = (): ACTION => {
+export const createDefaultJestConfigJS = (): Action => {
   if (fs.existsSync("jest.config.js")) {
-    return ACTION.NONE;
+    return Action.NONE;
   }
 
   fs.writeFileSync(
@@ -81,7 +81,7 @@ export const createDefaultJestConfigJS = (): ACTION => {
     `module.exports = require("typescript-tooling").extendWithDefaultJestConfig({});\n`
   );
 
-  return ACTION.CREATED;
+  return Action.CREATED;
 };
 
 export const extendWithDefaultJestConfig = (existingJestConfig: any): any =>
