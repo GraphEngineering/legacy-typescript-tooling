@@ -1,7 +1,7 @@
 import * as fs from "fs";
 
 import {
-  ACTION,
+  Action,
   copyDevDependenciesToPackageJSON,
   createOrExtendTSConfigFileJSON,
   createDefaultJestConfigJS,
@@ -43,7 +43,7 @@ describe("copying `devDependencies`", () => {
 
     const action = copyDevDependenciesToPackageJSON();
 
-    expect(action).toBe(ACTION.EXTENDED);
+    expect(action).toBe(Action.EXTENDED);
     expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(
       JSON.stringify(mergedPackageJSONContents, null, 2)
     );
@@ -60,7 +60,7 @@ describe("copying `devDependencies`", () => {
 
     const action = copyDevDependenciesToPackageJSON();
 
-    expect(action).toBe(ACTION.NONE);
+    expect(action).toBe(Action.NONE);
     expect(mockFs.writeFileSync).not.toBeCalled();
   });
 });
@@ -79,7 +79,7 @@ describe("creating and extending TypeScript or TSLint config files", () => {
       configFileJSONDefaultContents.extends
     );
 
-    expect(action).toBe(ACTION.CREATED);
+    expect(action).toBe(Action.CREATED);
     expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(
       JSON.stringify(configFileJSONDefaultContents, null, 2)
     );
@@ -105,7 +105,7 @@ describe("creating and extending TypeScript or TSLint config files", () => {
       configFileJSONDefaultContents.extends
     );
 
-    expect(action).toBe(ACTION.EXTENDED);
+    expect(action).toBe(Action.EXTENDED);
     expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(
       JSON.stringify(configFileJSONContentsWithExtends, null, 2)
     );
@@ -127,7 +127,7 @@ describe("creating and extending TypeScript or TSLint config files", () => {
       "doesn't matter"
     );
 
-    expect(action).toBe(ACTION.NONE);
+    expect(action).toBe(Action.NONE);
     expect(mockFs.writeFileSync).not.toBeCalled();
   });
 });
@@ -140,7 +140,7 @@ describe("creating a Jest config file and extending the default settings", () =>
 
     const action = createDefaultJestConfigJS();
 
-    expect(action).toBe(ACTION.CREATED);
+    expect(action).toBe(Action.CREATED);
     expect(mockFs.writeFileSync.mock.calls[0][1]).toBe(jestConfigJSContents);
   });
 
@@ -149,7 +149,7 @@ describe("creating a Jest config file and extending the default settings", () =>
 
     const action = createDefaultJestConfigJS();
 
-    expect(action).toBe(ACTION.NONE);
+    expect(action).toBe(Action.NONE);
     expect(mockFs.writeFileSync).not.toBeCalled();
   });
 
