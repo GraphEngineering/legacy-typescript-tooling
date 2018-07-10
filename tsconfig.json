@@ -1,16 +1,13 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "baseUrl": "src",
-    "paths": { "~/*": ["*"] },
+    "baseUrl": "./packages",
+    "paths": { "~/*": ["./*/src"] },
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "sourceMap": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node",
-    "module": "commonjs",
+    "sourceMap": true,
     "target": "es5",
     "lib": ["es2018"]
   }

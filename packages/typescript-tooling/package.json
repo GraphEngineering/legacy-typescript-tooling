@@ -33,11 +33,8 @@
     "build": "tsc && cp src/DefaultConfigs/*.json dist/DefaultConfigs/",
     "clean": "rimraf dist"
   },
-  "devDependencies": {
-    "@types/jest": "^23.0.0",
-    "@types/node": "^10.3.0"
-  },
   "dependencies": {
+    "config-tasks": "file:../config-tasks",
     "caporal": "^0.10.0",
     "chalk": "^2.4.1"
   }

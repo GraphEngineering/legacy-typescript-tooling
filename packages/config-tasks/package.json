@@ -1,8 +1,7 @@
 {
   "private": true,
   "name": "config-tasks",
-  "main": "dist/index.js",
-  "dependencies": {
-    "deepmerge": "^2.1.1"
+  "devDependencies": {
+    "@types/node": "^10.5.2"
   }
 }
