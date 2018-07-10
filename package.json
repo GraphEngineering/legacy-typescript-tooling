@@ -1,58 +1,13 @@
 {
-  "name": "typescript-tooling",
+  "private": true,
   "version": "3.0.3",
-  "description": "This package helps keep TypeScript configuration and tooling synced up between seperate projects.",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cruhl/typescript-tooling.git"
-  },
-  "keywords": [
-    "typescript",
-    "tslint",
-    "prettier",
-    "tooling"
-  ],
-  "author": "cruhl",
-  "license": "MIT",
-  "homepage": "https://github.com/typescript-tooling#readme",
-  "bugs": {
-    "url": "https://github.com/cruhl/typescript-tooling/issues"
-  },
-  "main": "dist/index.js",
-  "bin": {
-    "tst": "bin/cli.js"
-  },
-  "files": [
-    "bin",
-    "dist",
-    "tslint.json"
-  ],
-  "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "dev": "nodemon",
-    "sync-configs": "node syncConfigs.js",
-    "build": "tsc && cp src/DefaultConfigs/*.json dist/DefaultConfigs/",
-    "clean": "rimraf dist"
-  },
   "devDependencies": {
-    "@types/deepmerge": "^2.1.0",
-    "@types/jest": "^23.0.0",
-    "@types/node": "^10.3.0",
-    "jest": "^23.1.0",
-    "nodemon": "^1.17.5",
-    "rimraf": "^2.6.2",
-    "tooling": "1",
-    "ts-jest": "^22.4.6",
-    "ts-node": "^6.1.0",
+    "typescript": "^2.9.1",
     "tsconfig-paths": "^3.3.2",
     "tslint": "^5.10.0",
     "tslint-config-prettier": "^1.13.0",
-    "typescript": "^2.9.1"
-  },
-  "dependencies": {
-    "caporal": "^0.10.0",
-    "chalk": "^2.4.1",
-    "deepmerge": "^2.1.1"
+    "jest": "^23.1.0",
+    "ts-jest": "^22.4.6",
+    "@types/jest": "^23.0.0"
   }
 }

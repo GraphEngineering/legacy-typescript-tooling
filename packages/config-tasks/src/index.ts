@@ -1,4 +1,4 @@
-export { extendWithDefaultJestConfig } from "./configureProject";
+export { extendWithDefaultJestConfig } from "./Project";
 
 import * as cli from "caporal";
 import { default as chalk } from "chalk";
@@ -8,7 +8,7 @@ import {
   copyDevDependenciesToPackageJSON,
   createOrExtendTSConfigFileJSON,
   createDefaultJestConfigJS
-} from "./configureProject";
+} from "./Project";
 
 const enum Tasks {
   DEV_DEPENDENCIES = "devDependencies",
