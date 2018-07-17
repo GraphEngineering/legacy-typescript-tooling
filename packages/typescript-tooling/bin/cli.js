@@ -5,27 +5,18 @@
 
 // main(version, process.argv);
 
-const exec = require("child_process").exec;
+// const exec = require("child_process").exec;
 
-const [, npmScriptName] = JSON.parse(process.env.npm_config_argv).original;
-const [packageName, scriptName, scriptModifier] = npmScriptName.split(":");
+// const childProcess = exec(command);
 
-console.log({ packageName, scriptName, scriptModifier });
+// childProcess.stdout.on("data", data => {
+//   process.stdout.write(data);
+// });
 
-const command = {
-  clean: `rimraf packages/${packageName}/dist`
-}[scriptName];
+// childProcess.on("error", data => {
+//   process.exit(1);
+// });
 
-const childProcess = exec(command);
-
-childProcess.stdout.on("data", data => {
-  process.stdout.write(data);
-});
-
-childProcess.on("error", data => {
-  process.exit(1);
-});
-
-childProcess.on("exit", () => {
-  process.exit(0);
-});
+// childProcess.on("exit", () => {
+//   process.exit(0);
+// });

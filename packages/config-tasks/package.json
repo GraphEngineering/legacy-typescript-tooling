@@ -1,7 +1,0 @@
-{
-  "private": true,
-  "name": "config-tasks",
-  "devDependencies": {
-    "@types/node": "^10.5.2"
-  }
-}
