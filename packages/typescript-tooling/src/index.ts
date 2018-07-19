@@ -1,105 +1,93 @@
-import * as cli from "caporal";
+import * as fs from "fs";
+import * as path from "path";
+
+import cli from "caporal";
+import rimraf from "rimraf";
 import { default as chalk } from "chalk";
 
-// import {
-//   Action,
-//   copyDevDependenciesToPackageJSON,
-//   createOrExtendTSConfigFileJSON,
-//   createDefaultJestConfigJS
-// } from "~/config-tasks";
+import * as Log from "./Log";
 
-// const enum Tasks {
-//   DEV_DEPENDENCIES = "devDependencies",
-//   TS_CONFIG = "tsconfig",
-//   TS_LINT = "tslint",
-//   JEST = "jest"
-// }
+const CONFIG_DIRECTORY_PATH = ".tst";
 
-export const main = (version: string, argv: string[]) =>
-  cli
-    .version(version)
-    .option("--all", "Use all of the default options", cli.BOOL)
-    .option(
-      "--devDependencies",
-      "Copy default `devDependencies` into `package.json`",
-      cli.BOOL,
-      null
-    )
-    .option("--tsconfig", "Create or extend `tsconfig.json`", cli.BOOL, null)
-    .option("--tslint", "Create or extend `tslint.json`", cli.BOOL, null)
-    .option("--jest", "Create default `jest.config.js`", cli.BOOL, null)
-    .action((_args, options, logger) => {
-      // const configurationTasks = [
-      //   Tasks.DEV_DEPENDENCIES,
-      //   Tasks.TS_CONFIG,
-      //   Tasks.TS_LINT,
-      //   Tasks.JEST
-      // ].filter(
-      //   taskName =>
-      //     options[taskName] === true ||
-      //     (options.all && options[taskName] !== false)
-      // );
+const packageJSON = JSON.parse(
+  fs.readFileSync(path.join(__dirname, `../package.json`)).toString()
+);
 
-      // if (!configurationTasks.length) {
-      //   logger.info(chalk.dim("Nothing to do..."));
-      //   return;
-      // }
+export = (argv: string[]) => cli.parse(argv);
 
-      // logger.info(chalk.dim("Setting up your TypeScript environment..."));
+cli.version(packageJSON.version);
 
-      // if (configurationTasks.includes(Tasks.DEV_DEPENDENCIES)) {
-      //   const action = copyDevDependenciesToPackageJSON();
+cli
+  .command("init", "Configure typescript-tooling in the current directory")
+  .action((_args, _options, logger) => {
+    logger.info("");
 
-      //   if (action === Action.EXTENDED) {
-      //     logger.info(
-      //       `${log.checkMark} Extended ${log.fileName(
-      //         "package.json"
-      //       )} with default \`devDependencies\``
-      //     );
-      //   }
-      // }
+    if (fs.existsSync(CONFIG_DIRECTORY_PATH)) {
+      rimraf.sync(CONFIG_DIRECTORY_PATH);
+      logger.warn(Log.action(Log.info, "deleted", CONFIG_DIRECTORY_PATH));
+    }
 
-      // const runCreateOrExtendTSConfigFileJSON = (
-      //   fileName: string,
-      //   extendsValue: string
-      // ) => {
-      //   const action = createOrExtendTSConfigFileJSON(fileName, extendsValue);
+    fs.mkdirSync(CONFIG_DIRECTORY_PATH);
 
-      //   if (action !== Action.NONE) {
-      //     logger.info(`${log.checkMark} ${action} ${log.fileName(fileName)}`);
-      //   }
-      // };
+    logger.info(
+      `${Log.action(
+        Log.checkMark,
+        "created",
+        CONFIG_DIRECTORY_PATH
+      )} ${chalk.dim.grey("(note: add to `.gitignore`)")}`
+    );
 
-      // if (configurationTasks.includes(Tasks.TS_CONFIG)) {
-      //   runCreateOrExtendTSConfigFileJSON(
-      //     "tsconfig.json",
-      //     `./node_modules/typescript-tooling/dist/DefaultConfigs/tsconfig.json`
-      //   );
-      // }
+    ["tsconfig.json", "tslint.json", "jest.config.js"].forEach(fileName => {
+      const configFilePath = `./${CONFIG_DIRECTORY_PATH}/${fileName}`;
 
-      // if (configurationTasks.includes(Tasks.TS_LINT)) {
-      //   runCreateOrExtendTSConfigFileJSON(
-      //     "tslint.json",
-      //     "typescript-tooling/tslint"
-      //   );
-      // }
+      fs.writeFileSync(
+        configFilePath,
+        fs.readFileSync(path.join(__dirname, `../${fileName}`)).toString()
+      );
 
-      // if (configurationTasks.includes(Tasks.JEST)) {
-      //   const action = createDefaultJestConfigJS();
+      logger.info(Log.action(Log.checkMark, "created", configFilePath));
 
-      //   if (action === Action.CREATED) {
-      //     logger.info(
-      //       `${log.checkMark} Created ${log.fileName("jest.config.js")}`
-      //     );
-      //   }
-      // }
+      const contents = fs.existsSync(fileName) && fs.readFileSync(fileName);
 
-      logger.info(chalk.bold.green("All set!"));
-    })
-    .parse(argv);
+      if (fileName === "jest.config.js") {
+        if (contents) {
+          return;
+        }
 
-// const log = {
-//   checkMark: chalk.green("✓"),
-//   fileName: (name: string) => chalk.blue(name),
-//   code: (name: string) => `\n${chalk.dim(name)}`
-// };
+        fs.writeFileSync(
+          fileName,
+          `module.exports = require("${configFilePath}");\n`
+        );
+
+        logger.info(Log.action(Log.checkMark, "created", fileName));
+
+        return;
+      }
+
+      const config = contents ? JSON.parse(contents.toString()) : {};
+
+      if (config.extends) {
+        return;
+      }
+
+      fs.writeFileSync(
+        fileName,
+        JSON.stringify({ ...config, extends: configFilePath }, null, 2)
+      );
+
+      logger.info(
+        Log.action(Log.checkMark, contents ? "extended" : "created", fileName)
+      );
+    });
+
+    logger.info(
+      `\n${chalk.dim("You can install")} ${chalk.dim.italic(
+        "peerDependencies"
+      )} ${chalk.dim("with this command...")}\n${installDependenciesCommand()}`
+    );
+  });
+
+const installDependenciesCommand = () =>
+  `npm install --save-dev ${Object.entries(packageJSON.peerDependencies)
+    .map(([packageName, version]) => `${packageName}@${version}`)
+    .join(" ")}`;
