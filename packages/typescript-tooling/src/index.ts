@@ -14,15 +14,19 @@ const packageJSON = JSON.parse(
   FS.readFileSync(Path.join(__dirname, `../package.json`)).toString()
 );
 
-CLI.version(packageJSON.version);
+const packages = FS.readdirSync("packages").filter(
+  itemName => !itemName.includes(".")
+);
 
-CLI.command(
-  "init",
-  "Configure typescript-tooling in the current directory"
-).action(Init.action(packageJSON));
+CLI.version(packageJSON.version).description("TypeScript Tooling");
 
-CLI.command("dev", "Run a package with nodemon using watch mode")
-  .argument("<package name>", "The name of your package")
+CLI.command("init", `Configure ${Log.tool("typescript-tooling")}`).action(
+  Init.action(packageJSON)
+);
+
+CLI.command("dev", `Run a package with ${Log.tool("nodemon")}`)
+  .help(`Run a package with ${Log.tool("nodemon")}.`)
+  .argument("<package-name>", Log.packages(packages), packages)
   .action(({ packageName }, _options, logger) => {
     const packagePath = `packages/${packageName}`;
 
@@ -36,6 +40,30 @@ CLI.command("dev", "Run a package with nodemon using watch mode")
       `nodemon --watch ${packagePath}/src --ext ts,tsx --exec "${nodemonExec}"`,
       logger
     );
+  });
+
+CLI.command("test", `Test a package with ${Log.tool("Jest")}`)
+  .help(
+    `Run package tests with ${Log.tool("Jest")}. If ${Chalk.yellow(
+      "[package-name]"
+    )} isn't specified, all tests will run.`
+  )
+  .argument("[package-name]", Log.packages(packages), packages)
+  .option("-w --watch", "Re-run tests on file changes", CLI.BOOLEAN, false)
+  .action((_args, _options, logger) => {
+    shellCommand(`echo "TODO!"`, logger);
+  });
+
+CLI.command("build", `Build a package with ${Log.tool("TypeScript")}`)
+  .help(
+    `Compile a package with ${Log.tool("TypeScript")}. If ${Chalk.yellow(
+      "[package-name]"
+    )} isn't specified, all packages will build.`
+  )
+  .argument("[package-name]", Log.packages(packages), packages)
+  .option("-w --watch", "Re-run tests on file changes", CLI.BOOLEAN, false)
+  .action((_args, _options, logger) => {
+    shellCommand(`echo "TODO!"`, logger);
   });
 
 const shellCommand = (command: string, logger: Logger) => {

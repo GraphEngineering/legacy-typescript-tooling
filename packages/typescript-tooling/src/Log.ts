@@ -6,6 +6,11 @@ export const icons = {
   checkMark: Chalk.green("✓")
 };
 
+export const packages = (packageNames: string[]): string =>
+  packageNames.join(Chalk.dim("|"));
+
+export const tool = (toolName: string): string => Chalk.bold.italic(toolName);
+
 export const notification = (icon: string): string =>
   `${Chalk.dim.grey("(")}${icon}${Chalk.dim.grey(")")}`;
 

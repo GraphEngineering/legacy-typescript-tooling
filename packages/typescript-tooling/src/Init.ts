@@ -49,7 +49,7 @@ const addScriptsToUserPackageJSON = (logger: Logger) => {
 
   FS.writeFileSync(
     "package.json",
-    JSON.stringify({ scripts, ...userPackageJSON }, null, 2)
+    `${JSON.stringify({ scripts, ...userPackageJSON }, null, 2)}\n`
   );
 
   logger.info(
@@ -138,7 +138,7 @@ const extendOrCreateUserConfigFile = (
 
   FS.writeFileSync(
     fileName,
-    JSON.stringify({ ...config, extends: configFilePath }, null, 2)
+    `${JSON.stringify({ ...config, extends: configFilePath }, null, 2)}\n`
   );
 
   logger.info(
