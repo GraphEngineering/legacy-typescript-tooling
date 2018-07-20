@@ -1,93 +1,60 @@
-import * as fs from "fs";
-import * as path from "path";
+import * as FS from "fs";
+import * as Path from "path";
+import * as ChildProcess from "child_process";
 
-import cli from "caporal";
-import rimraf from "rimraf";
-import { default as chalk } from "chalk";
+import CLI from "caporal";
+import { default as Chalk } from "chalk";
 
+import * as Init from "./Init";
 import * as Log from "./Log";
 
-const CONFIG_DIRECTORY_PATH = ".tst";
+export = (argv: string[]) => CLI.parse(argv);
 
 const packageJSON = JSON.parse(
-  fs.readFileSync(path.join(__dirname, `../package.json`)).toString()
+  FS.readFileSync(Path.join(__dirname, `../package.json`)).toString()
 );
 
-export = (argv: string[]) => cli.parse(argv);
+CLI.version(packageJSON.version);
 
-cli.version(packageJSON.version);
+CLI.command(
+  "init",
+  "Configure typescript-tooling in the current directory"
+).action(Init.action(packageJSON));
 
-cli
-  .command("init", "Configure typescript-tooling in the current directory")
-  .action((_args, _options, logger) => {
-    logger.info("");
+CLI.command("dev", "Run a package with nodemon using watch mode")
+  .argument("<package name>", "The name of your package")
+  .action(({ packageName }, _options, logger) => {
+    const packagePath = `packages/${packageName}`;
 
-    if (fs.existsSync(CONFIG_DIRECTORY_PATH)) {
-      rimraf.sync(CONFIG_DIRECTORY_PATH);
-      logger.warn(Log.action(Log.info, "deleted", CONFIG_DIRECTORY_PATH));
-    }
+    const project = FS.existsSync(`${packagePath}/tsconfig.json`)
+      ? `--project ${packagePath}/tsconfig.json`
+      : "";
 
-    fs.mkdirSync(CONFIG_DIRECTORY_PATH);
+    const nodemonExec = `ts-node ${project} --require tsconfig-paths/register ${packagePath}/src/index.ts`;
 
-    logger.info(
-      `${Log.action(
-        Log.checkMark,
-        "created",
-        CONFIG_DIRECTORY_PATH
-      )} ${chalk.dim.grey("(note: add to `.gitignore`)")}`
-    );
-
-    ["tsconfig.json", "tslint.json", "jest.config.js"].forEach(fileName => {
-      const configFilePath = `./${CONFIG_DIRECTORY_PATH}/${fileName}`;
-
-      fs.writeFileSync(
-        configFilePath,
-        fs.readFileSync(path.join(__dirname, `../${fileName}`)).toString()
-      );
-
-      logger.info(Log.action(Log.checkMark, "created", configFilePath));
-
-      const contents = fs.existsSync(fileName) && fs.readFileSync(fileName);
-
-      if (fileName === "jest.config.js") {
-        if (contents) {
-          return;
-        }
-
-        fs.writeFileSync(
-          fileName,
-          `module.exports = require("${configFilePath}");\n`
-        );
-
-        logger.info(Log.action(Log.checkMark, "created", fileName));
-
-        return;
-      }
-
-      const config = contents ? JSON.parse(contents.toString()) : {};
-
-      if (config.extends) {
-        return;
-      }
-
-      fs.writeFileSync(
-        fileName,
-        JSON.stringify({ ...config, extends: configFilePath }, null, 2)
-      );
-
-      logger.info(
-        Log.action(Log.checkMark, contents ? "extended" : "created", fileName)
-      );
-    });
-
-    logger.info(
-      `\n${chalk.dim("You can install")} ${chalk.dim.italic(
-        "peerDependencies"
-      )} ${chalk.dim("with this command...")}\n${installDependenciesCommand()}`
+    shellCommand(
+      `nodemon --watch ${packagePath}/src --ext ts,tsx --exec "${nodemonExec}"`,
+      logger
     );
   });
 
-const installDependenciesCommand = () =>
-  `npm install --save-dev ${Object.entries(packageJSON.peerDependencies)
-    .map(([packageName, version]) => `${packageName}@${version}`)
-    .join(" ")}`;
+const shellCommand = (command: string, logger: Logger) => {
+  logger.info(
+    `\n${Log.notification(Log.icons.info)} ${Chalk.dim(
+      "Running command..."
+    )}\n\n${Log.code(command)}\n`
+  );
+
+  const childProcess = ChildProcess.exec(command);
+
+  childProcess.stdout.on("data", data => logger.info(`${data}`));
+  childProcess.stderr.on("data", data => logger.error(Chalk.red(`${data}`)));
+
+  childProcess.on("close", code => {
+    code === 0
+      ? logger.info(Log.success("Command finished"))
+      : logger.error(Log.error("Command failed!"));
+
+    process.exit(code);
+  });
+};

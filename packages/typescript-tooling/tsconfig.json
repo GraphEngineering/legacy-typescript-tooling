@@ -3,7 +3,7 @@
     "target": "es5",
     "lib": ["es2018"],
     "sourceMap": true,
-    "baseUrl": "./packages",
+    "baseUrl": "../packages",
     "paths": { "~/*": ["./*/src"] },
     "strict": true,
     "noUnusedLocals": true,
