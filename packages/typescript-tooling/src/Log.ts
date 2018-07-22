@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { default as Chalk } from "chalk";
 
 export const icons = {
@@ -6,21 +7,21 @@ export const icons = {
   checkMark: Chalk.green("✓")
 };
 
-export const packages = (packageNames: string[]): string =>
-  packageNames.join(Chalk.dim("|"));
-
-export const tool = (toolName: string): string => Chalk.bold.italic(toolName);
+export const tool = _.curry<string, string>(Chalk.bold.italic);
+export const code = _.curry<string, string>(Chalk.bgBlack.yellow);
+export const file = _.curry<string, string>(Chalk.blue);
 
 export const notification = (icon: string): string =>
   `${Chalk.dim.grey("(")}${icon}${Chalk.dim.grey(")")}`;
-
-export const code = (code: string): string => Chalk.italic.bgBlack.yellow(code);
-
-export const fileAction = (icon: string, verb: string, path: string) =>
-  `${notification(icon)} ${Chalk.dim(verb)} ${Chalk.blue(path)}`;
 
 export const success = (message: string): string =>
   `${notification(icons.checkMark)} ${Chalk.bold.green(message)}`;
 
 export const error = (message: string): string =>
   `${notification(icons.error)} ${Chalk.bold.red(message)}`;
+
+export const packages = (packageNames: string[]): string =>
+  packageNames.join(Chalk.dim("|"));
+
+export const fileAction = (icon: string, verb: string, path: string) =>
+  `${notification(icon)} ${Chalk.dim(verb)} ${file(path)}`;

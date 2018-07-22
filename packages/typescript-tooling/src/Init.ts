@@ -5,27 +5,17 @@ import { default as Chalk } from "chalk";
 import * as Rimraf from "rimraf";
 
 import * as Log from "./Log";
+import * as Scripts from "./Scripts";
+import * as PeerDependencies from "./PeerDependencies";
 
 const CONFIG_DIRECTORY_PATH = ".tst";
 
-export const action = (packageJSON: any) => (
+export const action = (packageJSON: any, packages: string[]) => (
   _args: {},
   _options: {},
   logger: Logger
 ) => {
-  const peerDependencies = Object.entries(packageJSON.peerDependencies).map(
-    ([packageName, version]) => `${packageName}@${version}`
-  );
-
-  logger.info(
-    `\n${Log.notification(Log.icons.info)} ${Chalk.dim(
-      "You can install"
-    )} ${Chalk.dim.italic("peerDependencies")} ${Chalk.dim(
-      "with this command..."
-    )}\n\n${Log.code(`npm install --save-dev ${peerDependencies.join(" ")}`)}`
-  );
-
-  addScriptsToUserPackageJSON(logger);
+  logger.info("");
   deleteOldConfigDirectory(logger);
   createConfigDirectory(logger);
 
@@ -33,30 +23,14 @@ export const action = (packageJSON: any) => (
     createConfigFiles(logger, fileName)
   );
 
-  logger.info(`\n${Log.success("All set!")}`);
-};
+  logger.info("");
+  Scripts.print(logger, packages);
 
-const addScriptsToUserPackageJSON = (logger: Logger) => {
-  const userPackageJSONContents =
-    FS.existsSync("package.json") && FS.readFileSync("package.json");
+  logger.info("");
+  PeerDependencies.print(logger, packageJSON);
 
-  if (!userPackageJSONContents) {
-    return;
-  }
-
-  const userPackageJSON = JSON.parse(userPackageJSONContents.toString());
-  const scripts = { tst: "tst", ...userPackageJSON.scripts };
-
-  FS.writeFileSync(
-    "package.json",
-    `${JSON.stringify({ scripts, ...userPackageJSON }, null, 2)}\n`
-  );
-
-  logger.info(
-    `\n${Log.notification(Log.icons.info)} ${Chalk.dim("Added")} ${Log.code(
-      "tst"
-    )} ${Chalk.dim("script to")} ${Chalk.blue("package.json")}\n`
-  );
+  logger.info("");
+  logger.info(`${Log.success("All set!")}`);
 };
 
 const createConfigDirectory = (logger: Logger) => {
@@ -138,7 +112,7 @@ const extendOrCreateUserConfigFile = (
 
   FS.writeFileSync(
     fileName,
-    `${JSON.stringify({ ...config, extends: configFilePath }, null, 2)}\n`
+    `${JSON.stringify({ ...config, extends: configFilePath }, null, 2)}`
   );
 
   logger.info(

@@ -1,12 +1,14 @@
 import * as FS from "fs";
 import * as Path from "path";
-import * as ChildProcess from "child_process";
 
 import CLI from "caporal";
 import { default as Chalk } from "chalk";
 
-import * as Init from "./Init";
 import * as Log from "./Log";
+import * as Init from "./Init";
+import * as Scripts from "./Scripts";
+import * as Dev from "./Dev";
+import * as ShellCommand from "./ShellCommand";
 
 export = (argv: string[]) => CLI.parse(argv);
 
@@ -21,25 +23,32 @@ const packages = FS.readdirSync("packages").filter(
 CLI.version(packageJSON.version).description("TypeScript Tooling");
 
 CLI.command("init", `Configure ${Log.tool("typescript-tooling")}`).action(
-  Init.action(packageJSON)
+  Init.action(packageJSON, packages)
 );
 
-CLI.command("dev", `Run a package with ${Log.tool("nodemon")}`)
-  .help(`Run a package with ${Log.tool("nodemon")}.`)
-  .argument("<package-name>", Log.packages(packages), packages)
-  .action(({ packageName }, _options, logger) => {
-    const packagePath = `packages/${packageName}`;
+CLI.command("scripts", `List convenience ${Chalk.italic("npm scripts")}`)
+  .help(
+    `List convenience ${Chalk.italic(
+      "npm scripts"
+    )} which can be added to your ${Log.file("package.json")}`
+  )
+  .action((_args, _options, logger) => {
+    logger.info("");
+    Scripts.print(logger, packages);
+  });
 
-    const project = FS.existsSync(`${packagePath}/tsconfig.json`)
-      ? `--project ${packagePath}/tsconfig.json`
-      : "";
-
-    const nodemonExec = `ts-node ${project} --require tsconfig-paths/register ${packagePath}/src/index.ts`;
-
-    shellCommand(
-      `nodemon --watch ${packagePath}/src --ext ts,tsx --exec "${nodemonExec}"`,
-      logger
-    );
+CLI.command(
+  "peerDependencies",
+  `Prints ${Log.code(`npm install --save-dev [...peerDependencies]`)}`
+)
+  .help(
+    `List convenience ${Chalk.italic(
+      "npm scripts"
+    )} which can be added to your ${Log.file("package.json")}`
+  )
+  .action((_args, _options, logger) => {
+    logger.info("");
+    Scripts.print(logger, packages);
   });
 
 CLI.command("test", `Test a package with ${Log.tool("Jest")}`)
@@ -50,9 +59,14 @@ CLI.command("test", `Test a package with ${Log.tool("Jest")}`)
   )
   .argument("[package-name]", Log.packages(packages), packages)
   .option("-w --watch", "Re-run tests on file changes", CLI.BOOLEAN, false)
-  .action((_args, _options, logger) => {
-    shellCommand(`echo "TODO!"`, logger);
-  });
+  .action((_args, _options, logger) =>
+    ShellCommand.exec(logger, `echo "TODO!"`)
+  );
+
+CLI.command("dev", `Run a package with ${Log.tool("nodemon")}`)
+  .help(`Run a package with ${Log.tool("nodemon")}.`)
+  .argument("<package-name>", Log.packages(packages), packages)
+  .action(Dev.action);
 
 CLI.command("build", `Build a package with ${Log.tool("TypeScript")}`)
   .help(
@@ -62,27 +76,6 @@ CLI.command("build", `Build a package with ${Log.tool("TypeScript")}`)
   )
   .argument("[package-name]", Log.packages(packages), packages)
   .option("-w --watch", "Re-run tests on file changes", CLI.BOOLEAN, false)
-  .action((_args, _options, logger) => {
-    shellCommand(`echo "TODO!"`, logger);
-  });
-
-const shellCommand = (command: string, logger: Logger) => {
-  logger.info(
-    `\n${Log.notification(Log.icons.info)} ${Chalk.dim(
-      "Running command..."
-    )}\n\n${Log.code(command)}\n`
+  .action((_args, _options, logger) =>
+    ShellCommand.exec(logger, `echo "TODO!"`)
   );
-
-  const childProcess = ChildProcess.exec(command);
-
-  childProcess.stdout.on("data", data => logger.info(`${data}`));
-  childProcess.stderr.on("data", data => logger.error(Chalk.red(`${data}`)));
-
-  childProcess.on("close", code => {
-    code === 0
-      ? logger.info(Log.success("Command finished"))
-      : logger.error(Log.error("Command failed!"));
-
-    process.exit(code);
-  });
-};
