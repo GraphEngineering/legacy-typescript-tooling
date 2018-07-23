@@ -1,8 +1,15 @@
 import * as FS from "fs";
 
-import * as ShellCommand from "./ShellCommand";
+import * as Log from "./Log";
+import * as Shell from "./Shell";
 
-export const action = ({ packageName }: any, _options: any, logger: Logger) => {
+export const help = `Run a package with ${Log.tool("nodemon")}`;
+
+export const action = async (
+  { packageName }: any,
+  _options: any,
+  logger: Logger
+) => {
   const packagePath = `packages/${packageName}`;
 
   const project = FS.existsSync(`${packagePath}/tsconfig.json`)
@@ -12,5 +19,8 @@ export const action = ({ packageName }: any, _options: any, logger: Logger) => {
   const nodemonExec = `ts-node${project}--require tsconfig-paths/register ${packagePath}/src/index.ts`;
   const command = `nodemon --watch ${packagePath}/src --ext ts,tsx --exec "${nodemonExec}"`;
 
-  ShellCommand.exec(logger, command);
+  const code = await Shell.exec(logger, command);
+
+  logger.info("");
+  process.exit(code);
 };

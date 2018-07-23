@@ -12,7 +12,7 @@ export const code = _.curry<string, string>(Chalk.bgBlack.yellow);
 export const file = _.curry<string, string>(Chalk.blue);
 
 export const notification = (icon: string): string =>
-  `${Chalk.dim.grey("(")}${icon}${Chalk.dim.grey(")")}`;
+  `${Chalk.grey("(")}${icon}${Chalk.grey(")")}`;
 
 export const success = (message: string): string =>
   `${notification(icons.checkMark)} ${Chalk.green(message)}`;
@@ -21,7 +21,7 @@ export const error = (message: string): string =>
   `${notification(icons.error)} ${Chalk.red(message)}`;
 
 export const packages = (packageNames: string[]): string =>
-  packageNames.join(Chalk.dim("|"));
+  packageNames.join(Chalk.grey("|"));
 
 export const fileAction = (icon: string, verb: string, path: string) =>
-  `${notification(icon)} ${Chalk.dim(verb)} ${file(path)}`;
+  `${notification(icon)} ${verb} ${file(path)}`;

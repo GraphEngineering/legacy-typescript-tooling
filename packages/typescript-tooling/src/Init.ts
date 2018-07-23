@@ -10,6 +10,10 @@ import * as Dependencies from "./Dependencies";
 
 const CONFIG_DIRECTORY_PATH = ".tst";
 
+export const help = `Configures ${Log.tool(
+  "Typescript Tooling"
+)} in the current directory`;
+
 export const action = (packageJSON: any, packages: string[]) => async (
   _args: any,
   options: any,
@@ -17,11 +21,9 @@ export const action = (packageJSON: any, packages: string[]) => async (
 ) => {
   logger.info("");
   logger.info(
-    `${Log.notification(
-      Log.icons.info
-    )} Configuring your project with the latest defaults from ${Log.file(
-      ".tst"
-    )}`
+    `${Log.notification(Log.icons.info)} Copying ${Log.tool(
+      "TypeScript Tooling"
+    )} defaults into ${Log.file(".tst")}, creating or extending config files...`
   );
   logger.info("");
 
@@ -34,7 +36,7 @@ export const action = (packageJSON: any, packages: string[]) => async (
 
   logger.info("");
   options.scripts
-    ? Scripts.save(logger, packages, packageJSON)
+    ? Scripts.save(logger, packages)
     : Scripts.print(logger, packages);
 
   logger.info("");
@@ -61,7 +63,7 @@ const createConfigDirectory = (logger: Logger) => {
       Log.icons.checkMark,
       "Created",
       CONFIG_DIRECTORY_PATH
-    )} ${Chalk.dim.grey("(note: add to `.gitignore`)")}`
+    )} ${Chalk.dim(`(note: add to ${Log.file(".gitignore")})`)}`
   );
 };
 

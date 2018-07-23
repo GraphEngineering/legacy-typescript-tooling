@@ -21,8 +21,8 @@ export const exec = async (logger: Logger, command: string) =>
 
     childProcess.on("close", code => {
       code === 0
-        ? logger.info(`\n${Log.success("Command finished")}`)
-        : logger.error(`\n${Log.error("Command failed!")}`);
+        ? logger.info(`${Log.success("Command finished")}`)
+        : logger.error(`${Log.error("Command failed!")}`);
 
       resolve(code);
     });

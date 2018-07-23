@@ -1,11 +1,27 @@
-import { default as Chalk } from "chalk";
-
 import * as Log from "./Log";
 import * as Shell from "./Shell";
 
+export const help = `Installs and saves required ${Log.tool(
+  "peerDependencies"
+)}`;
+
+export const action = (packageJSON: any) => async (
+  _args: any,
+  options: any,
+  logger: Logger
+) => {
+  logger.info("");
+
+  const code = options.install
+    ? await install(logger, packageJSON)
+    : print(logger, packageJSON);
+
+  process.exit(code || 0);
+};
+
 export const print = (logger: Logger, packageJSON: any) =>
   logger.info(
-    `${Log.notification(Log.icons.info)} Install ${Chalk.italic(
+    `${Log.notification(Log.icons.info)} Install ${Log.tool(
       "peerDependencies"
     )} with this command...\n\n${Log.code(command(packageJSON))}`
   );
