@@ -20,8 +20,8 @@ export const exec = (logger: Logger, command: string) => {
 
   childProcess.on("close", code => {
     code === 0
-      ? logger.info(Log.success("Command finished"))
-      : logger.error(Log.error("Command failed!"));
+      ? logger.info(`\n${Log.success("\nCommand finished")}\n`)
+      : logger.error(`\n${Log.error("Command failed!")}\n`);
 
     process.exit(code);
   });

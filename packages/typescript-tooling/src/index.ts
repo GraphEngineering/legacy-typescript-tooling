@@ -7,6 +7,7 @@ import { default as Chalk } from "chalk";
 import * as Log from "./Log";
 import * as Init from "./Init";
 import * as Scripts from "./Scripts";
+import * as PeerDependencies from "./PeerDependencies";
 import * as Dev from "./Dev";
 import * as ShellCommand from "./ShellCommand";
 
@@ -48,7 +49,7 @@ CLI.command(
   )
   .action((_args, _options, logger) => {
     logger.info("");
-    Scripts.print(logger, packages);
+    PeerDependencies.print(logger, packageJSON);
   });
 
 CLI.command("test", `Test a package with ${Log.tool("Jest")}`)
