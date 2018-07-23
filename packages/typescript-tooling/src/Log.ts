@@ -15,10 +15,10 @@ export const notification = (icon: string): string =>
   `${Chalk.dim.grey("(")}${icon}${Chalk.dim.grey(")")}`;
 
 export const success = (message: string): string =>
-  `${notification(icons.checkMark)} ${Chalk.bold.green(message)}`;
+  `${notification(icons.checkMark)} ${Chalk.green(message)}`;
 
 export const error = (message: string): string =>
-  `${notification(icons.error)} ${Chalk.bold.red(message)}`;
+  `${notification(icons.error)} ${Chalk.red(message)}`;
 
 export const packages = (packageNames: string[]): string =>
   packageNames.join(Chalk.dim("|"));

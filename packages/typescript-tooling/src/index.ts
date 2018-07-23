@@ -2,14 +2,14 @@ import * as FS from "fs";
 import * as Path from "path";
 
 import CLI from "caporal";
-import { default as Chalk } from "chalk";
+import chalk, { default as Chalk } from "chalk";
 
 import * as Log from "./Log";
 import * as Init from "./Init";
 import * as Scripts from "./Scripts";
-import * as PeerDependencies from "./PeerDependencies";
+import * as Dependencies from "./Dependencies";
 import * as Dev from "./Dev";
-import * as ShellCommand from "./ShellCommand";
+import * as Shell from "./Shell";
 
 export = (argv: string[]) => CLI.parse(argv);
 
@@ -23,9 +23,20 @@ const packages = FS.readdirSync("packages").filter(
 
 CLI.version(packageJSON.version).description("TypeScript Tooling");
 
-CLI.command("init", `Configure ${Log.tool("typescript-tooling")}`).action(
-  Init.action(packageJSON, packages)
-);
+CLI.command("init", `Configure ${Log.tool("typescript-tooling")}`)
+  .option(
+    "--install",
+    `Installs ${chalk.italic("peerDependencies")}`,
+    CLI.BOOLEAN,
+    false
+  )
+  .option(
+    "--scripts",
+    `Writes ${chalk.italic("npm scripts")} to ${Log.file("package.json")}`,
+    CLI.BOOLEAN,
+    false
+  )
+  .action(Init.action(packageJSON, packages));
 
 CLI.command("scripts", `List convenience ${Chalk.italic("npm scripts")}`)
   .help(
@@ -39,7 +50,7 @@ CLI.command("scripts", `List convenience ${Chalk.italic("npm scripts")}`)
   });
 
 CLI.command(
-  "peerDependencies",
+  "dependencies",
   `Prints ${Log.code(`npm install --save-dev [...peerDependencies]`)}`
 )
   .help(
@@ -49,7 +60,7 @@ CLI.command(
   )
   .action((_args, _options, logger) => {
     logger.info("");
-    PeerDependencies.print(logger, packageJSON);
+    Dependencies.print(logger, packageJSON);
   });
 
 CLI.command("test", `Test a package with ${Log.tool("Jest")}`)
@@ -60,9 +71,7 @@ CLI.command("test", `Test a package with ${Log.tool("Jest")}`)
   )
   .argument("[package-name]", Log.packages(packages), packages)
   .option("-w --watch", "Re-run tests on file changes", CLI.BOOLEAN, false)
-  .action((_args, _options, logger) =>
-    ShellCommand.exec(logger, `echo "TODO!"`)
-  );
+  .action((_args, _options, logger) => Shell.exec(logger, `echo "TODO!"`));
 
 CLI.command("dev", `Run a package with ${Log.tool("nodemon")}`)
   .help(`Run a package with ${Log.tool("nodemon")}.`)
@@ -77,6 +86,4 @@ CLI.command("build", `Build a package with ${Log.tool("TypeScript")}`)
   )
   .argument("[package-name]", Log.packages(packages), packages)
   .option("-w --watch", "Re-run tests on file changes", CLI.BOOLEAN, false)
-  .action((_args, _options, logger) =>
-    ShellCommand.exec(logger, `echo "TODO!"`)
-  );
+  .action((_args, _options, logger) => Shell.exec(logger, `echo "TODO!"`));

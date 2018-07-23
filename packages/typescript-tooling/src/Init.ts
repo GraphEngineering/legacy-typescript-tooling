@@ -6,16 +6,25 @@ import * as Rimraf from "rimraf";
 
 import * as Log from "./Log";
 import * as Scripts from "./Scripts";
-import * as PeerDependencies from "./PeerDependencies";
+import * as Dependencies from "./Dependencies";
 
 const CONFIG_DIRECTORY_PATH = ".tst";
 
-export const action = (packageJSON: any, packages: string[]) => (
-  _args: {},
-  _options: {},
+export const action = (packageJSON: any, packages: string[]) => async (
+  _args: any,
+  options: any,
   logger: Logger
 ) => {
   logger.info("");
+  logger.info(
+    `${Log.notification(
+      Log.icons.info
+    )} Configuring your project with the latest defaults from ${Log.file(
+      ".tst"
+    )}`
+  );
+  logger.info("");
+
   deleteOldConfigDirectory(logger);
   createConfigDirectory(logger);
 
@@ -24,13 +33,24 @@ export const action = (packageJSON: any, packages: string[]) => (
   );
 
   logger.info("");
-  Scripts.print(logger, packages);
+  options.scripts
+    ? Scripts.save(logger, packages, packageJSON)
+    : Scripts.print(logger, packages);
 
   logger.info("");
-  PeerDependencies.print(logger, packageJSON);
+  const code = options.install
+    ? await Dependencies.install(logger, packageJSON)
+    : Dependencies.print(logger, packageJSON);
 
-  logger.info("");
-  logger.info(`${Log.success("All set!")}`);
+  if (code === undefined) {
+    logger.info("");
+  }
+
+  if (code === undefined || code === 0) {
+    logger.info(`${Log.success("All set!")}`);
+  }
+
+  process.exit(code || 0);
 };
 
 const createConfigDirectory = (logger: Logger) => {
@@ -51,7 +71,9 @@ const deleteOldConfigDirectory = (logger: Logger) => {
   }
 
   Rimraf.sync(CONFIG_DIRECTORY_PATH);
-  logger.warn(Log.fileAction(Log.icons.info, "Deleted", CONFIG_DIRECTORY_PATH));
+  logger.warn(
+    Log.fileAction(Log.icons.checkMark, "Deleted", CONFIG_DIRECTORY_PATH)
+  );
 };
 
 const createConfigFiles = (logger: Logger, fileName: string) => {
