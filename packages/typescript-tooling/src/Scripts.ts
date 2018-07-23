@@ -2,9 +2,9 @@ import * as FS from "fs";
 
 import * as Log from "./Log";
 
-export const help = `Automatically manages ${Log.tool(
+export const help = `Automatically manage ${Log.tool(
   "npm scripts"
-)} for your packages`;
+)} for packages`;
 
 export const action = (packages: string[]) => (
   _args: any,
@@ -65,6 +65,6 @@ export const all = (packages: string[]) =>
       tst: "tst",
       ["tst:init"]: "npm run tst init",
       ["tst:scripts"]: "npm run tst scripts",
-      ["tst:dependencies"]: "npm run tst dependencies"
+      ["tst:deps"]: "npm run tst deps"
     }
   );

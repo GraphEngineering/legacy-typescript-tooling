@@ -1,9 +1,7 @@
 import * as Log from "./Log";
 import * as Shell from "./Shell";
 
-export const help = `Installs and saves required ${Log.tool(
-  "peerDependencies"
-)}`;
+export const help = `Install and save required ${Log.tool("peerDependencies")}`;
 
 export const action = (packageJSON: any) => async (
   _args: any,

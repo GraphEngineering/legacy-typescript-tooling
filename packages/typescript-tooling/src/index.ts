@@ -8,7 +8,7 @@ import * as Log from "./Log";
 
 import * as Init from "./Init";
 import * as Scripts from "./Scripts";
-import * as Dependencies from "./Dependencies";
+import * as Deps from "./Deps";
 import * as Dev from "./Dev";
 import * as Shell from "./Shell";
 
@@ -28,13 +28,13 @@ CLI.command("init", Init.help)
   .help(Init.help)
   .option(
     "--install",
-    `Install required ${Log.tool("peerDependencies")}`,
+    `Install and save required ${Log.tool("peerDependencies")}`,
     CLI.BOOLEAN,
     true
   )
   .option(
     "--scripts",
-    `Write ${Log.tool("npm scripts")} to ${Log.file("package.json")}`,
+    `Save ${Log.tool("npm scripts")} to ${Log.file("package.json")}`,
     CLI.BOOLEAN,
     true
   )
@@ -44,7 +44,7 @@ CLI.command("scripts", Scripts.help)
   .help(Scripts.help)
   .option(
     "--save",
-    `Save generated ${Chalk.italic("npm scripts")} to your ${Log.file(
+    `Save generated ${Log.tool("npm scripts")} to your ${Log.file(
       "package.json"
     )}`,
     CLI.BOOLEAN,
@@ -52,36 +52,46 @@ CLI.command("scripts", Scripts.help)
   )
   .action(Scripts.action(packages));
 
-CLI.command("dependencies", Dependencies.help)
-  .help(Dependencies.help)
+CLI.command("deps", Deps.help)
+  .help(Deps.help)
   .option(
     "--install",
-    `Use npm to install required ${Log.tool("peerDependencies")}`,
+    `Install ${Log.tool("peerDependencies")}`,
     CLI.BOOLEAN,
     true
   )
-  .action(Dependencies.action(packageJSON));
+  .option(
+    "--save",
+    `Save ${Log.tool("peerDependencies")} to ${Log.file("package.json")}`,
+    CLI.BOOLEAN,
+    true
+  )
+  .action(Deps.action(packageJSON));
 
 CLI.command("test", `Test a package with ${Log.tool("Jest")}`)
   .help(
     `Test a package with ${Log.tool("Jest")}. If ${Chalk.yellow(
       "[package-name]"
-    )} isn't specified, tests for all packages will run.`
+    )} isn't specified, tests run for all packages.`
   )
   .argument("[package-name]", Log.packages(packages), packages)
   .option("-w --watch", "Re-run tests on file changes", CLI.BOOLEAN, false)
   .action((_args, _options, logger) => Shell.exec(logger, `echo "TODO!"`));
 
 CLI.command("dev", Dev.help)
-  .help(Dev.help)
-  .argument("<package-name>", Log.packages(packages), packages)
+  .help(
+    `${Dev.help}. If ${Chalk.yellow(
+      "[package-name]"
+    )} isn't specified, all packages run.`
+  )
+  .argument("[package-name]", Log.packages(packages), packages)
   .action(Dev.action);
 
 CLI.command("build", `Build a package with ${Log.tool("TypeScript")}`)
   .help(
     `Build a package with ${Log.tool("TypeScript")}. If ${Chalk.yellow(
       "[package-name]"
-    )} isn't specified, all packages will build.`
+    )} isn't specified, build all packages.`
   )
   .argument("[package-name]", Log.packages(packages), packages)
   .action((_args, _options, logger) => Shell.exec(logger, `echo "TODO!"`));

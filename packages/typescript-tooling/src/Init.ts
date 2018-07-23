@@ -6,11 +6,11 @@ import * as Rimraf from "rimraf";
 
 import * as Log from "./Log";
 import * as Scripts from "./Scripts";
-import * as Dependencies from "./Dependencies";
+import * as Deps from "./Deps";
 
 const CONFIG_DIRECTORY_PATH = ".tst";
 
-export const help = `Configures ${Log.tool(
+export const help = `Configure ${Log.tool(
   "Typescript Tooling"
 )} in the current directory`;
 
@@ -41,8 +41,8 @@ export const action = (packageJSON: any, packages: string[]) => async (
 
   logger.info("");
   const code = options.install
-    ? await Dependencies.install(logger, packageJSON)
-    : Dependencies.print(logger, packageJSON);
+    ? await Deps.install(logger, packageJSON)
+    : Deps.print(logger, packageJSON);
 
   if (code === undefined) {
     logger.info("");
