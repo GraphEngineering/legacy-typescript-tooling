@@ -2,6 +2,7 @@ import * as FS from "fs";
 
 import * as Log from "./Log";
 import * as Shell from "./Shell";
+import * as Utils from "./Utils";
 
 export const help = `Run a package with ${Log.tool("nodemon")}`;
 
@@ -10,15 +11,13 @@ export const action = async (
   _options: any,
   logger: Logger
 ) => {
-  const packagePath = `packages/${packageName}`;
+  const packagePath = Utils.packagePath(packageName);
+  const TSConfigPath = FS.existsSync(`${packagePath}/tsconfig.json`)
+    ? `${packagePath}/tsconfig.json`
+    : `tsconfig.json`;
 
-  const project = FS.existsSync(`${packagePath}/tsconfig.json`)
-    ? ` --project ${packagePath}/tsconfig.json `
-    : " ";
-
-  const nodemonExec = `ts-node${project}--require tsconfig-paths/register ${packagePath}/src/index.ts`;
+  const nodemonExec = `ts-node ${TSConfigPath} --require tsconfig-paths/register ${packagePath}/src/index.ts`;
   const command = `nodemon --watch ${packagePath}/src --ext ts,tsx --exec "${nodemonExec}"`;
-
   const code = await Shell.exec(logger, command);
 
   logger.info("");

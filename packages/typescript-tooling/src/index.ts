@@ -10,6 +10,7 @@ import * as Init from "./Init";
 import * as Scripts from "./Scripts";
 import * as Deps from "./Deps";
 import * as Dev from "./Dev";
+import * as Build from "./Build";
 import * as Shell from "./Shell";
 
 export = (argv: string[]) => CLI.parse(argv);
@@ -89,9 +90,9 @@ CLI.command("dev", Dev.help)
 
 CLI.command("build", `Build a package with ${Log.tool("TypeScript")}`)
   .help(
-    `Build a package with ${Log.tool("TypeScript")}. If ${Chalk.yellow(
+    `${Build.help}. If ${Chalk.yellow(
       "[package-name]"
     )} isn't specified, build all packages.`
   )
   .argument("[package-name]", Log.packages(packages), packages)
-  .action((_args, _options, logger) => Shell.exec(logger, `echo "TODO!"`));
+  .action(Build.action);
