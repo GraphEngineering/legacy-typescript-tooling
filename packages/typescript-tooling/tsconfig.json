@@ -3,12 +3,18 @@
     "target": "es5",
     "lib": ["es2018"],
     "sourceMap": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+
     "baseUrl": "../packages",
     "paths": { "~/*": ["./*/src"] },
+
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true,
+
+    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "skipLibCheck": true
   }

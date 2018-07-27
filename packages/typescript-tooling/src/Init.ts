@@ -30,9 +30,12 @@ export const action = (packageJSON: any, packages: string[]) => async (
   deleteOldConfigDirectory(logger);
   createConfigDirectory(logger);
 
-  ["tsconfig.json", "tslint.json", "jest.config.js"].forEach(fileName =>
-    createConfigFiles(logger, fileName)
-  );
+  [
+    "declarations.d.ts",
+    "tsconfig.json",
+    "tslint.json",
+    "jest.config.js"
+  ].forEach(fileName => createConfigFiles(logger, fileName));
 
   logger.info("");
   options.scripts
@@ -99,7 +102,7 @@ const createConfigFiles = (logger: Logger, fileName: string) => {
 
   if (fileName === "jest.config.js") {
     createJestConfigFile(logger, fileName, contents, configFilePath);
-  } else {
+  } else if (fileName.includes("json")) {
     extendOrCreateUserConfigFile(logger, fileName, contents, configFilePath);
   }
 };

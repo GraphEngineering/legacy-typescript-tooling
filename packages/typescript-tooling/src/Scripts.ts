@@ -57,14 +57,13 @@ export const all = (packages: string[]) =>
   packages.reduce(
     (acc, packageName) => ({
       ...acc,
-      [`${packageName}:test`]: `npm run tst test ${packageName}`,
-      [`${packageName}:dev`]: `npm run tst dev ${packageName}`,
-      [`${packageName}:build`]: `npm run tst build ${packageName}`
+      [`${packageName}:test`]: `tst test ${packageName}`,
+      [`${packageName}:dev`]: `tst dev ${packageName}`,
+      [`${packageName}:build`]: `tst build ${packageName}`
     }),
     {
-      tst: "tst",
-      ["tst:init"]: "npm run tst init",
-      ["tst:scripts"]: "npm run tst scripts",
-      ["tst:deps"]: "npm run tst deps"
+      ["tst:init"]: "tst init --install false",
+      ["tst:scripts"]: "tst scripts",
+      ["tst:deps"]: "tst deps"
     }
   );
