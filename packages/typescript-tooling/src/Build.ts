@@ -20,11 +20,13 @@ export const action = async (
 ) => {
   const packagePath = Utils.packagePath(packageName);
 
-  const TSConfigPath = `${packagePath}/${
-    !FS.existsSync(`${packagePath}/tsconfig.json`)
-      ? TEMPORARY_TS_CONFIG_FILENAME
-      : "tsconfig.json"
-  }`;
+  // const TSConfigPath = `${packagePath}/${
+  //   !FS.existsSync(`${packagePath}/tsconfig.json`)
+  //     ? TEMPORARY_TS_CONFIG_FILENAME
+  //     : "tsconfig.json"
+  // }`;
+
+  const TSConfigPath = "tsconfig.json";
 
   if (TSConfigPath.includes(TEMPORARY_TS_CONFIG_FILENAME)) {
     FS.writeFileSync(
@@ -33,7 +35,7 @@ export const action = async (
     );
   }
 
-  const command = `tsc --project ${TSConfigPath} --outDir ${packagePath}/dist`;
+  const command = `rollup ${packagePath}/src/index.ts --file ${packagePath}/dist/index.js --config rollup.config.js`;
   const code = await Shell.exec(logger, command);
 
   if (TSConfigPath.includes(TEMPORARY_TS_CONFIG_FILENAME)) {

@@ -16,7 +16,10 @@
     // don't order object keys (from "tslint:latest"/"tslint-config-prettier")
     "object-literal-sort-keys": false,
 
-    // don't "I" in interfaces (from "tslint:latest"/"tslint-config-prettier")
+    /*
+      Don't require "I" as the first letter of an interface name.
+      (from "tslint:latest"/"tslint-config-prettier")
+    */
     "interface-name": false,
 
     // ban bad variable names, allow "_<variableName>" and "<VariableName>"
