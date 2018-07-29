@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   testMatch: ["**/?(*.)+(spec).ts?(x)"],
   transform: { "^.+\\.(ts|tsx)$": "ts-jest" },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],

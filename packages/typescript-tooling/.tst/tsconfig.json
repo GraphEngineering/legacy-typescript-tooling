@@ -1,25 +1,21 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "es2018"
-    ],
+    "lib": ["es2018"],
     "sourceMap": true,
     "module": "commonjs",
     "moduleResolution": "node",
+
     "baseUrl": "../packages",
-    "paths": {
-      "~/*": [
-        "./*/src"
-      ]
-    },
+    "paths": { "~/*": ["./*/src"] },
+
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true,
+
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "skipLibCheck": true
-  },
-  "extends": "./.tst/tsconfig.json"
+  }
 }

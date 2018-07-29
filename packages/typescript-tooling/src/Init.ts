@@ -31,10 +31,11 @@ export const action = (packageJSON: any, packages: string[]) => async (
   createConfigDirectory(logger);
 
   [
-    "declarations.d.ts",
     "tsconfig.json",
     "tslint.json",
-    "jest.config.js"
+    "jest.config.js",
+    "rollup.config.js",
+    "declarations.d.ts"
   ].forEach(fileName => createConfigFiles(logger, fileName));
 
   logger.info("");
@@ -100,14 +101,14 @@ const createConfigFiles = (logger: Logger, fileName: string) => {
   const contents =
     FS.existsSync(fileName) && FS.readFileSync(fileName).toString();
 
-  if (fileName === "jest.config.js") {
-    createJestConfigFile(logger, fileName, contents, configFilePath);
-  } else if (fileName.includes("json")) {
+  if (fileName.includes("json")) {
     extendOrCreateUserConfigFile(logger, fileName, contents, configFilePath);
+  } else if (fileName.includes("js")) {
+    createJSConfigFile(logger, fileName, contents, configFilePath);
   }
 };
 
-const createJestConfigFile = (
+const createJSConfigFile = (
   logger: Logger,
   fileName: string,
   fileContents: string | false,
@@ -117,10 +118,7 @@ const createJestConfigFile = (
     return;
   }
 
-  FS.writeFileSync(
-    fileName,
-    `module.exports = require("${configFilePath}");\n`
-  );
+  FS.writeFileSync(fileName, `export { default } from "${configFilePath}";\n`);
 
   logger.info(Log.fileAction(Log.icons.checkMark, "Created", fileName));
 };
