@@ -1,12 +1,28 @@
 {
+  // extend community defaults, but use Prettier's exceptions
   "extends": ["tslint:latest", "tslint-config-prettier"],
+
   "rules": {
+    // ban `import * as foo from "bar/bazz";`
+    // make an exception for cross-package imports `~/<package>`
     "no-submodule-imports": [true, "~"],
+
+    // don't order imports (from "tslint:latest"/"tslint-config-prettier")
     "ordered-imports": false,
+
+    // ban reliance on packages which aren't actually imported
     "no-implicit-dependencies": false,
+
+    // don't order object keys (from "tslint:latest"/"tslint-config-prettier")
     "object-literal-sort-keys": false,
+
+    // don't "I" in interfaces (from "tslint:latest"/"tslint-config-prettier")
     "interface-name": false,
+
+    // ban bad variable names, allow "_<variableName>" and "<VariableName>"
     "variable-name": [true, "allow-leading-underscore", "allow-pascal-case"],
+
+    // ban unused variables except for "_<variableName>", which means ignored
     "no-unused-variable": [true, { "ignore-pattern": "^_" }]
   }
 }
