@@ -30,13 +30,9 @@ export const action = (packageJSON: any, packages: string[]) => async (
   deleteOldConfigDirectory(logger);
   createConfigDirectory(logger);
 
-  [
-    "tsconfig.json",
-    "tslint.json",
-    "jest.config.js",
-    "rollup.config.js",
-    "declarations.d.ts"
-  ].forEach(fileName => createConfigFiles(logger, fileName));
+  ["tsconfig.json", "tslint.json", "jest.config.js"].forEach(fileName =>
+    createConfigFiles(logger, fileName)
+  );
 
   logger.info("");
   options.scripts

@@ -89,7 +89,7 @@ CLI.command("dev", Dev.help)
   .argument("[package-name]", Log.packages(packages), packages)
   .action(Dev.action);
 
-CLI.command("build", `Build a package with ${Log.tool("TypeScript")}`)
+CLI.command("build", Build.help)
   .help(
     `${Build.help}. If ${Chalk.yellow(
       "[package-name]"

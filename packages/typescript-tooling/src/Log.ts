@@ -3,8 +3,8 @@ import { default as Chalk } from "chalk";
 
 export const icons = {
   error: Chalk.red("×"),
-  info: Chalk.cyan("ℹ"),
-  checkMark: Chalk.green("✓")
+  info: Chalk.cyan("i"),
+  checkMark: Chalk.green("✔")
 };
 
 export const tool = _.curry<string, string>(Chalk.bold.italic);

@@ -6,12 +6,10 @@ import * as Utils from "./Utils";
 
 const DEFAULT_TS_CONFIG_CONTENTS = {
   extends: "../../tsconfig.json",
-  includes: ["src/**/*.ts"]
+  include: ["src/**/*.ts"]
 };
 
-const TEMPORARY_TS_CONFIG_FILENAME = ".tsconfig.json";
-
-export const help = `Build a package with ${Log.tool("TypeScript")}`;
+export const help = `Build a package with ${Log.tool("Parcel")}`;
 
 export const action = async (
   { packageName }: any,
@@ -19,26 +17,21 @@ export const action = async (
   logger: Logger
 ) => {
   const packagePath = Utils.packagePath(packageName);
+  const TSConfigPath = `${packagePath}/tsconfig.json`;
 
-  // const TSConfigPath = `${packagePath}/${
-  //   !FS.existsSync(`${packagePath}/tsconfig.json`)
-  //     ? TEMPORARY_TS_CONFIG_FILENAME
-  //     : "tsconfig.json"
-  // }`;
+  const isNecessaryToCreateTSConfig = false; // !FS.existsSync(TSConfigPath);
 
-  const TSConfigPath = "tsconfig.json";
-
-  if (TSConfigPath.includes(TEMPORARY_TS_CONFIG_FILENAME)) {
+  if (isNecessaryToCreateTSConfig) {
     FS.writeFileSync(
       TSConfigPath,
       JSON.stringify(DEFAULT_TS_CONFIG_CONTENTS, null, 2)
     );
   }
 
-  const command = `rollup ${packagePath}/src/index.ts --file ${packagePath}/dist/index.js --config rollup.config.js`;
+  const command = `parcel build ${packagePath}/src/index.ts --out-dir ${packagePath}/dist --target node`;
   const code = await Shell.exec(logger, command);
 
-  if (TSConfigPath.includes(TEMPORARY_TS_CONFIG_FILENAME)) {
+  if (isNecessaryToCreateTSConfig) {
     FS.unlinkSync(TSConfigPath);
   }
 

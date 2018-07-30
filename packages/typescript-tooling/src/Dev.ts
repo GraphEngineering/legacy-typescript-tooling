@@ -16,7 +16,7 @@ export const action = async (
     ? `${packagePath}/tsconfig.json`
     : `tsconfig.json`;
 
-  const nodemonExec = `ts-node ${TSConfigPath} --require tsconfig-paths/register ${packagePath}/src/index.ts`;
+  const nodemonExec = `ts-node --project ${TSConfigPath} --require tsconfig-paths/register ${packagePath}/src/index.ts`;
   const command = `nodemon --watch ${packagePath}/src --ext ts,tsx --exec "${nodemonExec}"`;
   const code = await Shell.exec(logger, command);
 

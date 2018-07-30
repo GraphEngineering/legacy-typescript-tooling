@@ -10,17 +10,17 @@ export const action = (packages: string[]) => (
   _args: any,
   options: any,
   logger: Logger
-) => {
-  logger.info("");
-  options.save ? save(logger, packages) : print(logger, packages);
-};
+) =>
+  logger.info("") && options.save
+    ? save(logger, packages)
+    : print(logger, packages);
 
 export const print = (logger: Logger, packages: string[]) =>
   logger.info(
     `${Log.notification(Log.icons.info)} These ${Log.tool(
       "npm scripts"
     )} can be added to your ${Log.file("package.json")}...\n\n${Log.code(
-      JSON.stringify(all(packages), null, 2)
+      JSON.stringify(scripts(packages), null, 2)
     )}`
   );
 
@@ -29,14 +29,14 @@ export const save = (logger: Logger, packages: string[]) => {
     FS.readFileSync("package.json").toString()
   );
 
-  const scripts = {
-    ...all(packages),
+  const updatedScripts = {
+    ...scripts(packages),
     ...userPackageJSONContents.scripts
   };
 
   const updatedUserPackageJSONContents = {
     ...userPackageJSONContents,
-    scripts
+    scripts: updatedScripts
   };
 
   FS.writeFileSync(
@@ -48,12 +48,12 @@ export const save = (logger: Logger, packages: string[]) => {
     `${Log.notification(Log.icons.checkMark)} These ${Log.tool(
       "npm scripts"
     )} were added to your ${Log.file("package.json")}...\n\n${Log.code(
-      JSON.stringify(scripts, null, 2)
+      JSON.stringify(updatedScripts, null, 2)
     )}`
   );
 };
 
-export const all = (packages: string[]) =>
+export const scripts = (packages: string[]) =>
   packages.reduce(
     (acc, packageName) => ({
       ...acc,
