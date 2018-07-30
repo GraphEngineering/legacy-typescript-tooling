@@ -29,14 +29,14 @@ export const save = (logger: Logger, packages: string[]) => {
     FS.readFileSync("package.json").toString()
   );
 
-  const scripts = all(packages);
+  const scripts = {
+    ...all(packages),
+    ...userPackageJSONContents.scripts
+  };
 
   const updatedUserPackageJSONContents = {
     ...userPackageJSONContents,
-    scripts: {
-      ...scripts,
-      ...userPackageJSONContents.scripts
-    }
+    scripts
   };
 
   FS.writeFileSync(
