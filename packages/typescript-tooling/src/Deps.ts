@@ -3,34 +3,35 @@ import * as Shell from "./Shell";
 
 export const help = `Install and save required ${Log.tool("peerDependencies")}`;
 
-export const action = (packageJSON: any) => async (
+export const action = (packageJSON: any) => (
   _args: any,
   options: any,
   logger: Logger
 ) => {
   logger.info("");
 
-  const code = options.install
-    ? await install(logger, packageJSON)
-    : print(logger, packageJSON);
+  const status = options.install
+    ? install(logger, packageJSON, options.save)
+    : print(logger, packageJSON, options.save) || 0;
 
-  process.exit(code || 0);
+  process.exit(status);
 };
 
-export const print = (logger: Logger, packageJSON: any) =>
+export const print = (logger: Logger, packageJSON: any, save: boolean) =>
   logger.info(
     `${Log.notification(Log.icons.info)} Install ${Log.tool(
       "peerDependencies"
-    )} with this command...\n\n${Log.code(command(packageJSON))}`
+    )} with this command...\n\n${Log.code(command(packageJSON, save))}`
   );
 
-export const install = async (
+export const install = (
   logger: Logger,
-  packageJSON: any
-): Promise<number> => Shell.exec(logger, command(packageJSON));
+  packageJSON: any,
+  save: boolean
+): number => Shell.run(logger, command(packageJSON, save));
 
-const command = (packageJSON: any) =>
-  `npm install --save-dev ${all(packageJSON).join(" ")}`;
+const command = (packageJSON: any, save: boolean) =>
+  `npm install${save ? " --save-dev " : " "}${all(packageJSON).join(" ")}`;
 
 export const all = (packageJSON: any): string[] =>
   Object.entries(packageJSON.peerDependencies).map(

@@ -9,13 +9,13 @@ import * as Scripts from "./Scripts";
 import * as Deps from "./Deps";
 
 const CONFIG_DIRECTORY_PATH = ".tst";
-const CONFIG_DEFAULTS_DIRECTORY_PATH = "../../config-defaults";
+const CONFIG_DEFAULTS_DIRECTORY_PATH = "../configs";
 
 export const help = `Configure ${Log.tool(
   "Typescript Tooling"
 )} in the current directory`;
 
-export const action = (packageJSON: any, packages: string[]) => async (
+export const action = (packageJSON: any, packages: string[]) => (
   _args: any,
   options: any,
   logger: Logger
@@ -26,13 +26,14 @@ export const action = (packageJSON: any, packages: string[]) => async (
       "TypeScript Tooling"
     )} defaults into ${Log.file(".tst")}, creating or extending config files...`
   );
+
   logger.info("");
 
   deleteOldConfigDirectory(logger);
   createConfigDirectory(logger);
 
-  ["tsconfig.json", "tslint.json", "jest.config.js"].forEach(fileName =>
-    createConfigFiles(logger, fileName)
+  ["lerna.json", "tsconfig.json", "tslint.json", "jest.config.js"].forEach(
+    fileName => createConfigFiles(logger, fileName)
   );
 
   logger.info("");
@@ -41,19 +42,15 @@ export const action = (packageJSON: any, packages: string[]) => async (
     : Scripts.print(logger, packages);
 
   logger.info("");
-  const code = options.install
-    ? await Deps.install(logger, packageJSON)
-    : Deps.print(logger, packageJSON);
+  const status = options.install
+    ? Deps.install(logger, packageJSON, true)
+    : Deps.print(logger, packageJSON, true) || 0;
 
-  if (code === undefined) {
-    logger.info("");
-  }
-
-  if (code === undefined || code === 0) {
+  if (status === 0) {
     logger.info(`${Log.success("All set!")}`);
   }
 
-  process.exit(code || 0);
+  process.exit(status);
 };
 
 const createConfigDirectory = (logger: Logger) => {
@@ -97,6 +94,10 @@ const createConfigFiles = (logger: Logger, fileName: string) => {
     )
   );
 
+  if (fileName === "lerna.json") {
+    return;
+  }
+
   const contents =
     FS.existsSync(fileName) && FS.readFileSync(fileName).toString();
 
@@ -117,7 +118,10 @@ const createJSConfigFile = (
     return;
   }
 
-  FS.writeFileSync(fileName, `export { default } from "${configFilePath}";\n`);
+  FS.writeFileSync(
+    fileName,
+    `module.exports = require("${configFilePath}");\n`
+  );
 
   logger.info(Log.fileAction(Log.icons.checkMark, "Created", fileName));
 };

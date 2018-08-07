@@ -11,11 +11,7 @@ const DEFAULT_TS_CONFIG_CONTENTS = {
 
 export const help = `Build a package with ${Log.tool("Parcel")}`;
 
-export const action = async (
-  { packageName }: any,
-  _options: any,
-  logger: Logger
-) => {
+export const action = ({ packageName }: any, _options: any, logger: Logger) => {
   const packagePath = Utils.packagePath(packageName);
   const TSConfigPath = `${packagePath}/tsconfig.json`;
 
@@ -29,12 +25,12 @@ export const action = async (
   }
 
   const command = `parcel build ${packagePath}/src/index.ts --out-dir ${packagePath}/dist --target node`;
-  const code = await Shell.exec(logger, command);
+  const status = Shell.run(logger, command);
 
   if (isNecessaryToCreateTSConfig) {
     FS.unlinkSync(TSConfigPath);
   }
 
   logger.info("");
-  process.exit(code);
+  process.exit(status);
 };

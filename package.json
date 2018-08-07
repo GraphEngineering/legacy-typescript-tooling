@@ -18,12 +18,11 @@
     "typescript-tooling": "file:~/GitHub/typescript-tooling/packages/typescript-tooling"
   },
   "scripts": {
-    "tst": "tst",
-    "tst:init": "npm run tst init",
-    "tst:scripts": "npm run tst scripts",
-    "tst:deps": "npm run tst deps",
-    "typescript-tooling:test": "npm run tst test typescript-tooling",
-    "typescript-tooling:dev": "npm run tst dev typescript-tooling",
-    "typescript-tooling:build": "npm run tst build typescript-tooling"
+    "tst:init": "tst init",
+    "tst:scripts": "tst scripts",
+    "tst:deps": "tst deps",
+    "typescript-tooling:test": "tst test typescript-tooling",
+    "typescript-tooling:dev": "tst dev typescript-tooling",
+    "typescript-tooling:build": "tst build typescript-tooling"
   }
 }

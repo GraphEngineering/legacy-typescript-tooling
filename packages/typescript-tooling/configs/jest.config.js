@@ -1,4 +1,7 @@
-export default {
+module.exports = {
+  // by default, we're expecting to be testing in a node environment
+  testEnvironment: "node",
+
   // look for files matching `*.spec.ts(x)`
   testMatch: ["**/?(*.)+(spec).ts?(x)"],
 

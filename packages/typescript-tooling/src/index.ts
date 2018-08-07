@@ -9,10 +9,9 @@ import * as Log from "./Log";
 import * as Init from "./Init";
 import * as Scripts from "./Scripts";
 import * as Deps from "./Deps";
+import * as Test from "./Test";
 import * as Dev from "./Dev";
 import * as Build from "./Build";
-
-import * as Shell from "./Shell";
 
 export = (argv: string[]) => CLI.parse(argv);
 
@@ -42,18 +41,6 @@ CLI.command("init", Init.help)
   )
   .action(Init.action(packageJSON, packages));
 
-CLI.command("scripts", Scripts.help)
-  .help(Scripts.help)
-  .option(
-    "--save",
-    `Save generated ${Log.tool("npm scripts")} to your ${Log.file(
-      "package.json"
-    )}`,
-    CLI.BOOLEAN,
-    true
-  )
-  .action(Scripts.action(packages));
-
 CLI.command("deps", Deps.help)
   .help(Deps.help)
   .option(
@@ -70,15 +57,27 @@ CLI.command("deps", Deps.help)
   )
   .action(Deps.action(packageJSON));
 
-CLI.command("test", `Test a package with ${Log.tool("Jest")}`)
+CLI.command("scripts", Scripts.help)
+  .help(Scripts.help)
+  .option(
+    "--save",
+    `Save generated ${Log.tool("npm scripts")} to your ${Log.file(
+      "package.json"
+    )}`,
+    CLI.BOOLEAN,
+    true
+  )
+  .action(Scripts.action(packages));
+
+CLI.command("test", Test.help)
   .help(
-    `Test a package with ${Log.tool("Jest")}. If ${Chalk.yellow(
+    `${Test.help}. If ${Chalk.yellow(
       "[package-name]"
     )} isn't specified, tests run for all packages.`
   )
   .argument("[package-name]", Log.packages(packages), packages)
   .option("-w --watch", "Re-run tests on file changes", CLI.BOOLEAN, false)
-  .action((_args, _options, logger) => Shell.exec(logger, `echo "TODO!"`));
+  .action(Test.action);
 
 CLI.command("dev", Dev.help)
   .help(

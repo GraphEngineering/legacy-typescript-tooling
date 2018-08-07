@@ -18,8 +18,8 @@ export const action = async (
 
   const nodemonExec = `ts-node --project ${TSConfigPath} --require tsconfig-paths/register ${packagePath}/src/index.ts`;
   const command = `nodemon --watch ${packagePath}/src --ext ts,tsx --exec "${nodemonExec}"`;
-  const code = await Shell.exec(logger, command);
+  const status = Shell.run(logger, command);
 
   logger.info("");
-  process.exit(code);
+  process.exit(status);
 };

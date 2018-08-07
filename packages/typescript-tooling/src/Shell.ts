@@ -1,29 +1,26 @@
 import * as ChildProcess from "child_process";
 
-import { default as Chalk } from "chalk";
-
 import * as Log from "./Log";
 
-export const exec = async (logger: Logger, command: string) =>
-  new Promise<number>(resolve => {
-    logger.info(
-      `${Log.notification(Log.icons.info)} Running command...\n\n${Log.code(
-        command
-      )}\n`
-    );
+export const run = (logger: Logger, command: string) => {
+  logger.info(
+    `${Log.notification(Log.icons.info)} Running command...\n\n${Log.code(
+      command
+    )}`
+  );
 
-    const childProcess = ChildProcess.exec(command);
+  logger.info("");
 
-    process.stdin.on("data", data => childProcess.stdin.write(data));
-
-    childProcess.stdout.on("data", data => logger.info(`${data}`));
-    childProcess.stderr.on("data", data => logger.error(Chalk.red(`${data}`)));
-
-    childProcess.on("close", code => {
-      code === 0
-        ? logger.info(`${Log.success("Command finished")}`)
-        : logger.error(`${Log.error("Command failed!")}`);
-
-      resolve(code);
-    });
+  const { status } = ChildProcess.spawnSync(command, [], {
+    stdio: "inherit",
+    shell: true
   });
+
+  logger.info("");
+
+  status === 0
+    ? logger.info(`${Log.success("Command finished")}`)
+    : logger.error(`${Log.error("Command failed!")}`);
+
+  return status;
+};
