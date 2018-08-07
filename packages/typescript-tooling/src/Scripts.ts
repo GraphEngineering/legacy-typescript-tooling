@@ -10,10 +10,10 @@ export const action = (packages: string[]) => (
   _args: any,
   options: any,
   logger: Logger
-) =>
-  logger.info("") && options.save
-    ? save(logger, packages)
-    : print(logger, packages);
+) => {
+  logger.info("");
+  options.save ? save(logger, packages) : print(logger, packages);
+};
 
 export const print = (logger: Logger, packages: string[]) =>
   logger.info(
