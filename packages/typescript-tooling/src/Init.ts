@@ -9,6 +9,7 @@ import * as Scripts from "./Scripts";
 import * as Deps from "./Deps";
 
 const CONFIG_DIRECTORY_PATH = ".tst";
+const CONFIG_DEFAULTS_DIRECTORY_PATH = "../../config-defaults";
 
 export const help = `Configure ${Log.tool(
   "Typescript Tooling"
@@ -83,7 +84,9 @@ const createConfigFiles = (logger: Logger, fileName: string) => {
 
   FS.writeFileSync(
     configFilePath,
-    FS.readFileSync(Path.join(__dirname, `../${fileName}`)).toString()
+    FS.readFileSync(
+      Path.join(__dirname, `${CONFIG_DEFAULTS_DIRECTORY_PATH}/${fileName}`)
+    ).toString()
   );
 
   logger.info(

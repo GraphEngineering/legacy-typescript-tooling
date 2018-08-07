@@ -19,7 +19,7 @@ export const action = async (
   const packagePath = Utils.packagePath(packageName);
   const TSConfigPath = `${packagePath}/tsconfig.json`;
 
-  const isNecessaryToCreateTSConfig = false; // !FS.existsSync(TSConfigPath);
+  const isNecessaryToCreateTSConfig = !FS.existsSync(TSConfigPath);
 
   if (isNecessaryToCreateTSConfig) {
     FS.writeFileSync(
