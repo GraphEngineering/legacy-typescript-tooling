@@ -163,7 +163,7 @@ describe("command: tst init", () => {
         ([path]) => path === "tsconfig.json" || path === "tslint.json"
       );
 
-    test("`tsconfig.json` and `tslint.json` contents are preserved", () => {
+    test("`tsconfig.json` and `tslint.json` are written with existing contents merged", () => {
       mockFS.existsSync.mockReturnValue(true);
 
       CLI(argv("init"));
@@ -185,7 +185,7 @@ describe("command: tst init", () => {
       ]);
     });
 
-    test("`tsconfig.json` and `tslint.json` not written when `extends` already set", () => {
+    test("`tsconfig.json` and `tslint.json` are not written when `extends` is set", () => {
       mockFS.existsSync.mockReturnValue(true);
       mockFS.readFileSync.mockReturnValue(
         new Buffer(
@@ -300,7 +300,7 @@ describe("command: tst test <package-name>", () => {
     );
   });
 
-  test("option `--watch` is passed to Jest", () => {
+  test("`--watch` is passed to Jest", () => {
     CLI(argv("test package-a --watch"));
     expect(mockChildProcess.spawnSync).toBeCalledWith(
       "npx jest --watch packages/package-a/**/*.spec.ts*",
@@ -322,7 +322,7 @@ describe("command: tst dev <package-name>", () => {
     );
   });
 
-  test("`npx nodemon` is executed with the project flag if `tsconfig.json` exists", () => {
+  test("`npx nodemon` is executed with the `--project` flag if `tsconfig.json` exists", () => {
     mockFS.existsSync.mockReturnValue(true);
 
     CLI(argv("dev package-a"));
@@ -333,7 +333,7 @@ describe("command: tst dev <package-name>", () => {
   });
 });
 
-describe("command: tst dev <package-name>", () => {
+describe("command: tst build <package-name>", () => {
   test("child process status code propagates", () => {
     testChildProcessStatusPropagates(() => CLI(argv("build package-a")));
   });
