@@ -3,3 +3,4 @@ node_modules
 
 .tst
 .vscode
+.DS_Store
