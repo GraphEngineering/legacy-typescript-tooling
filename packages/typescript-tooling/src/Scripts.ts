@@ -58,6 +58,7 @@ export const scripts = (packages: string[]) =>
     (acc, packageName) => ({
       ...acc,
       [`${packageName}:test`]: `tst test ${packageName}`,
+      [`${packageName}:test:watch`]: `tst test ${packageName} --watch`,
       [`${packageName}:dev`]: `tst dev ${packageName}`,
       [`${packageName}:build`]: `tst build ${packageName}`
     }),

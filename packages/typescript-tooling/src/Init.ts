@@ -53,6 +53,17 @@ export const action = (packageJSON: any, packages: string[]) => (
   process.exit(status);
 };
 
+const deleteOldConfigDirectory = (logger: Logger) => {
+  if (!FS.existsSync(CONFIG_DIRECTORY_PATH)) {
+    return;
+  }
+
+  Rimraf.sync(CONFIG_DIRECTORY_PATH);
+  logger.info(
+    Log.fileAction(Log.icons.checkMark, "Deleted", CONFIG_DIRECTORY_PATH)
+  );
+};
+
 const createConfigDirectory = (logger: Logger) => {
   FS.mkdirSync(CONFIG_DIRECTORY_PATH);
 
@@ -62,17 +73,6 @@ const createConfigDirectory = (logger: Logger) => {
       "Created",
       CONFIG_DIRECTORY_PATH
     )} ${Chalk.dim(`(note: add to ${Log.file(".gitignore")})`)}`
-  );
-};
-
-const deleteOldConfigDirectory = (logger: Logger) => {
-  if (!FS.existsSync(CONFIG_DIRECTORY_PATH)) {
-    return;
-  }
-
-  Rimraf.sync(CONFIG_DIRECTORY_PATH);
-  logger.warn(
-    Log.fileAction(Log.icons.checkMark, "Deleted", CONFIG_DIRECTORY_PATH)
   );
 };
 
@@ -140,7 +140,7 @@ const extendOrCreateUserConfigFile = (
 
   FS.writeFileSync(
     fileName,
-    `${JSON.stringify({ ...config, extends: configFilePath }, null, 2)}`
+    `${JSON.stringify({ ...config, extends: configFilePath }, null, 2)}\n`
   );
 
   logger.info(

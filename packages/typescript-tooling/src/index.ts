@@ -2,7 +2,6 @@ import * as FS from "fs";
 import * as Path from "path";
 
 import CLI from "caporal";
-import { default as Chalk } from "chalk";
 
 import * as Log from "./Log";
 
@@ -24,6 +23,16 @@ const packages = FS.readdirSync("packages").filter(
 );
 
 CLI.version(packageJSON.version).description("TypeScript Tooling");
+
+if (process.env.NODE_ENV === "test") {
+  CLI.logger({
+    debug: console.log,
+    info: console.log,
+    log: console.log,
+    warn: console.log,
+    error: console.log
+  });
+}
 
 CLI.command("init", Init.help)
   .help(Init.help)
@@ -70,29 +79,17 @@ CLI.command("scripts", Scripts.help)
   .action(Scripts.action(packages));
 
 CLI.command("test", Test.help)
-  .help(
-    `${Test.help}. If ${Chalk.yellow(
-      "[package-name]"
-    )} isn't specified, tests run for all packages.`
-  )
-  .argument("[package-name]", Log.packages(packages), packages)
+  .help(Test.help)
+  .argument("[package-name>", Log.packages(packages), packages)
   .option("-w --watch", "Re-run tests on file changes", CLI.BOOLEAN, false)
   .action(Test.action);
 
 CLI.command("dev", Dev.help)
-  .help(
-    `${Dev.help}. If ${Chalk.yellow(
-      "[package-name]"
-    )} isn't specified, all packages run.`
-  )
-  .argument("[package-name]", Log.packages(packages), packages)
+  .help(Dev.help)
+  .argument("<package-name>", Log.packages(packages), packages)
   .action(Dev.action);
 
 CLI.command("build", Build.help)
-  .help(
-    `${Build.help}. If ${Chalk.yellow(
-      "[package-name]"
-    )} isn't specified, build all packages.`
-  )
-  .argument("[package-name]", Log.packages(packages), packages)
+  .help(Build.help)
+  .argument("<package-name>", Log.packages(packages), packages)
   .action(Build.action);

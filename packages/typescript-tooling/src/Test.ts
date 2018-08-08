@@ -3,7 +3,12 @@ import * as Shell from "./Shell";
 
 export const help = `Run tests with ${Log.tool("Jest")}`;
 
-export const action = async (_args: any, options: any, logger: Logger) => {
+export const action = async (args: any, options: any, logger: Logger) => {
   logger.info("");
-  process.exit(Shell.run(logger, `npx jest${options.watch ? " --watch" : ""}`));
+
+  const watch = options.watch ? " --watch" : "";
+  const pattern = `packages/${args.packageName}/**/*.spec.ts*`;
+  const command = `npx jest${watch} ${pattern}`;
+
+  process.exit(Shell.run(logger, command));
 };

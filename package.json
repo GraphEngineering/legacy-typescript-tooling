@@ -22,6 +22,7 @@
     "tst:scripts": "tst scripts",
     "tst:deps": "tst deps",
     "typescript-tooling:test": "tst test typescript-tooling",
+    "typescript-tooling:test:watch": "tst test typescript-tooling --watch",
     "typescript-tooling:dev": "tst dev typescript-tooling",
     "typescript-tooling:build": "tst build typescript-tooling"
   }
