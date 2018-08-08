@@ -85,7 +85,7 @@ beforeEach(() => {
   mockChildProcess.spawnSync.mockReturnValue({ status: 0 });
 });
 
-describe("tst init", () => {
+describe("command: tst init", () => {
   test("child process status code propagates", () => {
     testChildProcessStatusPropagates(() => CLI(argv("init")));
   });
@@ -201,7 +201,7 @@ describe("tst init", () => {
   });
 });
 
-describe("tst deps", () => {
+describe("command: tst deps", () => {
   test("child process status code propagates", () => {
     testChildProcessStatusPropagates(() => CLI(argv("deps")));
   });
@@ -234,7 +234,7 @@ describe("tst deps", () => {
   });
 });
 
-describe("tst scripts", () => {
+describe("command: tst scripts", () => {
   beforeEach(() => {
     mockFS.readFileSync.mockReturnValue(
       new Buffer(stringifyPretty(MOCK_PACKAGE_JSON_CONTENTS))
@@ -287,7 +287,7 @@ describe("tst scripts", () => {
   });
 });
 
-describe("tst test <package-name>", () => {
+describe("command: tst test <package-name>", () => {
   test("child process status code propagates", () => {
     testChildProcessStatusPropagates(() => CLI(argv("test package-a")));
   });
@@ -309,7 +309,7 @@ describe("tst test <package-name>", () => {
   });
 });
 
-describe("tst dev <package-name>", () => {
+describe("command: tst dev <package-name>", () => {
   test("child process status code propagates", () => {
     testChildProcessStatusPropagates(() => CLI(argv("dev package-a")));
   });
@@ -333,7 +333,7 @@ describe("tst dev <package-name>", () => {
   });
 });
 
-describe("tst dev <package-name>", () => {
+describe("command: tst dev <package-name>", () => {
   test("child process status code propagates", () => {
     testChildProcessStatusPropagates(() => CLI(argv("build package-a")));
   });
