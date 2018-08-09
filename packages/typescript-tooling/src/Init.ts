@@ -47,7 +47,8 @@ export const action = (packageJSON: any, packages: string[]) => (
     : Deps.print(logger, packageJSON, true) || 0;
 
   if (status === 0) {
-    logger.info(`${Log.success("All set!")}`);
+    logger.info("");
+    logger.info(Log.success("All set!"));
   }
 
   process.exit(status);

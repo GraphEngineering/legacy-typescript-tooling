@@ -25,6 +25,9 @@
     // ban bad variable names, allow "_<variableName>" and "<VariableName>"
     "variable-name": [true, "allow-leading-underscore", "allow-pascal-case"],
 
+    // ES6 makes this safe, also it sometimes makes since to reuse a name
+    "no-shadowed-variable": false,
+
     // ban unused variables except for "_<variableName>", which means ignored
     "no-unused-variable": [true, { "ignore-pattern": "^_" }]
   }
