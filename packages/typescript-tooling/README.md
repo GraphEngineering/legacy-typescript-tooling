@@ -1,6 +1,6 @@
 # Typescript Tooling // `tst`
 
-> Build an awesome TypeScript project without wasting time configuring tools...
+> Build awesome TypeScript projects without wasting time configuring tools...
 
 ## Features
 
@@ -14,19 +14,19 @@
 1. Install `tst`
 
 ```
-⟩ npm install --save-dev typescript-tooling
+npm install --save-dev typescript-tooling
 ```
 
 2. Run the `init` command
 
 ```
-⟩ npx tst init
+npx tst init
 ```
 
 3. **That's it!** Run the example package with...
 
 ```
-⟩ npm run example:dev
+npm run example:dev
 ```
 
 ## Usage
@@ -45,7 +45,7 @@
      init                      Configure Typescript Tooling in the current directory
      deps                      Install and save required peerDependencies
      scripts                   Automatically manage npm scripts for packages
-     test [package-name>       Run tests with Jest
+     test <package-name>       Run tests with Jest
      dev <package-name>        Run a package with nodemon
      build <package-name>      Build a package with Parcel
      help <command>            Display help for a specific command
