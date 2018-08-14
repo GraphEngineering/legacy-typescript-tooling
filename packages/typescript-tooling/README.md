@@ -1,6 +1,6 @@
 # Typescript Tooling // `tst`
 
-> Build awesome TypeScript projects without wasting time configuring tools...
+A tool for creating and managing TypeScript projects with minimal configuration.
 
 ## Features
 
