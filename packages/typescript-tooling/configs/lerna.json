@@ -1,3 +1,4 @@
 {
-  "lerna": "^3.0.0-rc.0"
+  "lerna": "^3.0.0-rc.0",
+  "packages": ["pacakges/*"]
 }
