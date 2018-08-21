@@ -28,25 +28,25 @@
     "tst": "bin/cli.js"
   },
   "peerDependencies": {
-    "lerna": "^3.0.0-rc.0",
-    "typescript": "^2.9.2",
-    "@types/node": "^10.5.3",
-    "tslint": "^5.10.0",
-    "tslint-config-prettier": "^1.13.0",
-    "jest": "^23.1.0",
     "@types/jest": "^23.0.0",
-    "ts-jest": "^23.0.1",
+    "@types/node": "^10.5.3",
+    "jest": "^23.1.0",
+    "lerna": "^3.1.2",
     "nodemon": "^1.18.2",
+    "parcel-bundler": "^1.9.7",
+    "parcel-plugin-typescript": "^1.0.0",
+    "ts-jest": "^23.0.1",
     "ts-node": "^7.0.0",
     "tsconfig-paths": "^3.3.2",
-    "parcel-bundler": "^1.9.7",
-    "parcel-plugin-typescript": "^1.0.0"
+    "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.13.0",
+    "typescript": "^2.9.2"
   },
   "dependencies": {
     "caporal": "^0.10.0",
     "chalk": "^2.4.1",
-    "rimraf": "^2.6.2",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "rimraf": "^2.6.2"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.112",
