@@ -85,7 +85,9 @@ const createConfigFiles = (logger: Logger, fileName: string) => {
 
   FS.writeFileSync(
     configFilePath,
-    FS.readFileSync(Path.join(__dirname, configFilePath)).toString()
+    FS.readFileSync(
+      Path.join(__dirname, `${CONFIG_DEFAULTS_DIRECTORY_PATH}/${fileName}`)
+    ).toString()
   );
 
   logger.info(
