@@ -1,6 +1,5 @@
 {
   "private": true,
-  "version": "3.0.3",
   "scripts": {
     "tst:init": "tst init",
     "tst:scripts": "tst scripts",
@@ -14,7 +13,6 @@
     "@types/jest": "^23.3.1",
     "@types/node": "^10.7.1",
     "jest": "^23.5.0",
-    "lerna": "^3.1.1",
     "nodemon": "^1.18.3",
     "parcel-bundler": "^1.9.7",
     "parcel-plugin-typescript": "^1.0.0",
@@ -25,5 +23,8 @@
     "tslint-config-prettier": "^1.15.0",
     "typescript": "^2.9.2",
     "typescript-tooling": "file:packages/typescript-tooling"
+  },
+  "dependencies": {
+    "lerna": "^3.1.2"
   }
 }
