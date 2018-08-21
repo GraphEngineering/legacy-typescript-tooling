@@ -89,7 +89,7 @@ CLI.command("scripts", Scripts.help)
 
 CLI.command("test", Test.help)
   .help(Test.help)
-  .argument("[package-name>", Log.packages(packages), packages)
+  .argument("<package-name>", Log.packages(packages), packages)
   .option("-w --watch", "Re-run tests on file changes", CLI.BOOLEAN, false)
   .action(Test.action);
 

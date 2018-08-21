@@ -1,41 +1,82 @@
-# Typescript Tooling
+# Typescript Tooling // `tst`
 
-# Motivation
+A tool for creating and managing TypeScript projects with minimal configuration.
 
-It's a bit of a chore to set up a new TypeScript project... Usually it involves
-copying over a `tsconfig.json`, `tslint.json`, and various other files from an
-existing project. Not only is this tedious and error-prone, it also makes it
-hard to maintain and enforce consistent tooling/settings between projects.
+## Features
 
-The purpose of this project is set up a ready-to-use TypeScript enviroment with
-a single command based on an opinionated set of defaults which work for both
-client and server code. Additionally, upgrading to new versions of Typescript
-Tooling will keep your project in sync with the latest default configurations.
+- 🛠️ Reasonable defaults for [TypeScript](https://github.com/Microsoft/TypeScript), [TSLint](https://github.com/palantir/tslint), and [Jest](https://github.com/facebook/jest)
+- 🐉 Opinionated monorepo project structure using [Lerna](https://github.com/lerna/lerna)
+- 📦 Installs and saves required `devDependencies`
+- 📝 Generates `npm scripts` for your packages (`test`, `test:watch`, `dev`, `build`)
 
-# Usage
+## Getting Started
+
+1. Install `tst`
 
 ```
-⟩ npm install --save-dev typescript-tooling
-⟩ npx tst --all && npm install
+npm install --save-dev typescript-tooling
 ```
 
-Hop into `src/index.ts` and you're ready-to-go, happy TypeScripting!
+2. Run the `init` command
 
-# Default Configurations
+```
+npx tst init
+```
 
-- all the defaults, it's possible to exclude items
-- `npx tst --help`
+3. **That's it!** Run the example package with...
 
-## Project Structure
+```
+npm run example:dev
+```
 
-## NPM Scripts
+## Usage
 
-## TSConfig
+```
+⟩ npx tst help
 
-## TSLint
+   tst 3.0.3 - TypeScript Tooling
 
-## Jest
+   USAGE
 
-## Nodemon
+     tst <command> [options]
 
-## Dependencies
+   COMMANDS
+
+     init                      Configure Typescript Tooling in the current directory
+     deps                      Install and save required peerDependencies
+     scripts                   Automatically manage npm scripts for packages
+     test <package-name>       Run tests with Jest
+     dev <package-name>        Run a package with nodemon
+     build <package-name>      Build a package with Parcel
+     help <command>            Display help for a specific command
+
+   GLOBAL OPTIONS
+
+     -h, --help         Display help
+     -V, --version      Display version
+     --no-color         Disable colors
+     --quiet            Quiet mode - only displays warn and error messages
+     -v, --verbose      Verbose mode - will also output debug messages
+```
+
+## Motivation & Disclaimer
+
+## How does it work?
+
+### Project Structure
+
+### NPM Scripts
+
+### TSConfig
+
+### TSLint
+
+### Jest
+
+### Nodemon
+
+### Dependencies
+
+## License
+
+MIT
