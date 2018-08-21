@@ -78,13 +78,14 @@ const createConfigDirectory = (logger: Logger) => {
 };
 
 const createConfigFiles = (logger: Logger, fileName: string) => {
-  const configFilePath = `./${CONFIG_DIRECTORY_PATH}/${fileName}`;
+  const configFilePath =
+    fileName === "lerna.json"
+      ? "lerna.json"
+      : `./${CONFIG_DIRECTORY_PATH}/${fileName}`;
 
   FS.writeFileSync(
     configFilePath,
-    FS.readFileSync(
-      Path.join(__dirname, `${CONFIG_DEFAULTS_DIRECTORY_PATH}/${fileName}`)
-    ).toString()
+    FS.readFileSync(Path.join(__dirname, configFilePath)).toString()
   );
 
   logger.info(
