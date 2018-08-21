@@ -8,6 +8,7 @@ import * as Log from "./Log";
 import * as Init from "./Init";
 import * as Scripts from "./Scripts";
 import * as Deps from "./Deps";
+
 import * as Test from "./Test";
 import * as Dev from "./Dev";
 import * as Build from "./Build";
@@ -39,6 +40,14 @@ CLI.command("init", Init.help)
   .option(
     "--install",
     `Install and save required ${Log.tool("peerDependencies")}`,
+    CLI.BOOLEAN,
+    true
+  )
+  .option(
+    "--example",
+    `Creates an example package at ${Log.file(
+      "packages/example"
+    )} if ${Log.file("packages")} directory isn't found`,
     CLI.BOOLEAN,
     true
   )
