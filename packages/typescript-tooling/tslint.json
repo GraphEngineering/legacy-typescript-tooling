@@ -1,6 +1,0 @@
-{
-  "extends": "../../.tst/tslint.json",
-  "rules": {
-    "no-console": false
-  }
-}

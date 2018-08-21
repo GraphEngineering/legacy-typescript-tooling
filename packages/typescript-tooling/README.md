@@ -23,10 +23,10 @@ npm install --save-dev typescript-tooling
 npx tst init
 ```
 
-3. **That's it!** Run the example package with...
+3. **That's it!** Test the example package with...
 
 ```
-npm run example:dev
+npm run example:test
 ```
 
 ## Usage
@@ -58,24 +58,6 @@ npm run example:dev
      --quiet            Quiet mode - only displays warn and error messages
      -v, --verbose      Verbose mode - will also output debug messages
 ```
-
-## Motivation & Disclaimer
-
-## How does it work?
-
-### Project Structure
-
-### NPM Scripts
-
-### TSConfig
-
-### TSLint
-
-### Jest
-
-### Nodemon
-
-### Dependencies
 
 ## License
 
