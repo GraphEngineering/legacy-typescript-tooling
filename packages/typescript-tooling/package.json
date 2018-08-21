@@ -21,7 +21,8 @@
   "files": [
     "bin",
     "dist",
-    "README.md"
+    "configs",
+    "packages"
   ],
   "main": "dist/index.js",
   "bin": {
