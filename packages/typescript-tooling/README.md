@@ -34,7 +34,7 @@ npm run example:test
 ```
 ⟩ npx tst help
 
-   tst 3.0.3 - TypeScript Tooling
+   tst 4.0.1 - TypeScript Tooling
 
    USAGE
 
@@ -44,7 +44,7 @@ npm run example:test
 
      init                      Configure Typescript Tooling in the current directory
      deps                      Install and save required peerDependencies
-     scripts                   Automatically manage npm scripts for packages
+     scripts                   Automatically generates npm scripts for packages
      test <package-name>       Run tests with Jest
      dev <package-name>        Run a package with nodemon
      build <package-name>      Build a package with Parcel
