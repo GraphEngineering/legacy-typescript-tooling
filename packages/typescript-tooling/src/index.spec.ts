@@ -154,7 +154,7 @@ describe("command: tst init", () => {
       scripts: MOCK_SCRIPTS
     });
 
-    const emptyProjectWrites = [
+    const expectedFileWrites = [
       ["lerna.json", MOCK_FILE_JSON],
       ["./.tst/tsconfig.json", MOCK_FILE_JSON],
       ["tsconfig.json", MOCK_TS_CONFIG_JSON],
@@ -165,24 +165,19 @@ describe("command: tst init", () => {
       ["package.json", packageJSON]
     ];
 
-    test("file writes are correct for an empty project", () => {
+    test("file writes are correct for a new project", () => {
       CLI(argv("init"));
-      expect(mockFS.writeFileSync.mock.calls).toEqual(emptyProjectWrites);
-    });
-
-    test("file writes are correct for project with packages", () => {
-      CLI(argv("init"));
-      expect(mockFS.writeFileSync.mock.calls).toEqual(emptyProjectWrites);
+      expect(mockFS.writeFileSync.mock.calls).toEqual(expectedFileWrites);
     });
 
     test("`--scripts false` does not write scripts to `package.json`", () => {
       CLI(argv("init --scripts false"));
       expect(mockFS.writeFileSync.mock.calls).toEqual(
-        emptyProjectWrites.filter(([path]) => path !== "package.json")
+        expectedFileWrites.filter(([path]) => path !== "package.json")
       );
     });
 
-    const TSConfigOrLintWrites = () =>
+    const TSConfigAndTSLintWrites = () =>
       mockFS.writeFileSync.mock.calls.filter(
         ([path]) => path === "tsconfig.json" || path === "tslint.json"
       );
@@ -191,7 +186,7 @@ describe("command: tst init", () => {
       mockFS.existsSync.mockReturnValue(true);
 
       CLI(argv("init"));
-      expect(TSConfigOrLintWrites()).toEqual([
+      expect(TSConfigAndTSLintWrites()).toEqual([
         [
           "tsconfig.json",
           `${stringifyPretty({
@@ -220,7 +215,26 @@ describe("command: tst init", () => {
       );
 
       CLI(argv("init"));
-      expect(TSConfigOrLintWrites()).toEqual([]);
+      expect(TSConfigAndTSLintWrites()).toEqual([]);
+    });
+  });
+
+  describe("copying example packages directory", () => {
+    test("example packages directory is copied into the project", () => {
+      CLI(argv("init"));
+      expect(mockFSExtra.copySync.mock.calls[0][1]).toEqual("packages");
+    });
+
+    test("example packages directory is not copied when `packages` directory exists", () => {
+      mockFS.existsSync.mockReturnValue(true);
+
+      CLI(argv("init"));
+      expect(mockFSExtra.copySync).not.toHaveBeenCalled();
+    });
+
+    test("`--example false` prevents copying example packages directory", () => {
+      CLI(argv("init --example false"));
+      expect(mockFSExtra.copySync).not.toHaveBeenCalled();
     });
   });
 });
