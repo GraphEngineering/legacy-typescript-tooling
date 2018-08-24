@@ -1,16 +1,22 @@
-import FS from "fs";
 import ChildProcess from "child_process";
-import Rimraf from "rimraf";
+import FS from "fs";
+import FSExtra from "fs-extra";
+
+import * as Utils from "./Utils";
 
 // set up mocks
 
-jest.mock("fs");
 jest.mock("child_process");
-jest.mock("rimraf");
+jest.mock("fs");
+jest.mock("fs-extra");
 
-const mockFS: jest.Mocked<typeof FS> = FS as any;
+jest.mock("./Utils");
+
 const mockChildProcess: jest.Mocked<typeof ChildProcess> = ChildProcess as any;
-const mockRimraf: jest.Mocked<typeof Rimraf> = Rimraf as any;
+const mockFS: jest.Mocked<typeof FS> = FS as any;
+const mockFSExtra: jest.Mocked<typeof FSExtra> = FSExtra as any;
+
+const mockUtils: jest.Mocked<typeof Utils> = Utils as any;
 
 const mockProcessExit = jest.fn();
 const mockConsoleLog = jest.fn();
@@ -18,7 +24,7 @@ const mockConsoleLog = jest.fn();
 process.exit = mockProcessExit as any;
 console.log = mockConsoleLog as any;
 
-// mock data and helpers
+// helpers and mock data
 
 const argv = (args: string): string[] => ["node", "tst", ...args.split(" ")];
 
@@ -41,10 +47,13 @@ const MOCK_PEER_DEPENDENCIES = Object.entries(
   .map(([packageName, version]) => `${packageName}@${version}`)
   .join(" ");
 
-const MOCK_SCRIPTS = {
+const MOCK_TST_SCRIPTS = {
   "tst:init": "tst init --install false",
   "tst:scripts": "tst scripts",
-  "tst:deps": "tst deps",
+  "tst:deps": "tst deps"
+};
+
+const MOCK_PACKAGE_SCRIPTS = {
   "package-a:test": "tst test package-a",
   "package-a:test:watch": "tst test package-a --watch",
   "package-a:dev": "tst dev package-a",
@@ -53,6 +62,11 @@ const MOCK_SCRIPTS = {
   "package-b:test:watch": "tst test package-b --watch",
   "package-b:dev": "tst dev package-b",
   "package-b:build": "tst build package-b"
+};
+
+const MOCK_SCRIPTS = {
+  ...MOCK_TST_SCRIPTS,
+  ...MOCK_PACKAGE_SCRIPTS
 };
 
 const MOCK_FILE_CONTENTS = { contents: "DOES_NOT_CHANGE" };
@@ -70,11 +84,10 @@ const MOCK_SPAWN_SYNC_ARGS = [[], { shell: true, stdio: "inherit" }];
 
 // `import CLI from "./index"` immediately reads from the file system
 
+mockUtils.packages.mockReturnValue(MOCK_PACKAGES);
 mockFS.readFileSync.mockReturnValue(
   new Buffer(JSON.stringify(MOCK_PACKAGE_JSON_CONTENTS))
 );
-
-mockFS.readdirSync.mockReturnValue(MOCK_PACKAGES);
 
 import CLI from "./index";
 
@@ -82,6 +95,12 @@ import CLI from "./index";
 
 beforeEach(() => {
   jest.resetAllMocks();
+
+  mockUtils.packagePath.mockImplementation(
+    packageName => `packages/${packageName}`
+  );
+
+  mockUtils.packages.mockReturnValue(MOCK_PACKAGES);
   mockChildProcess.spawnSync.mockReturnValue({ status: 0 });
 });
 
@@ -115,12 +134,12 @@ describe("command: tst init", () => {
       mockFS.existsSync.mockReturnValue(true);
 
       CLI(argv("init"));
-      expect(mockRimraf.sync).toBeCalledWith(".tst");
+      expect(mockFS.rmdirSync).toBeCalledWith(".tst");
     });
 
     test("directory is not deleted if it doesn't exist", () => {
       CLI(argv("init"));
-      expect(mockRimraf.sync).not.toBeCalled();
+      expect(mockFS.rmdirSync).not.toBeCalled();
     });
 
     test("directory is always created", () => {
@@ -136,7 +155,7 @@ describe("command: tst init", () => {
     });
 
     const emptyProjectWrites = [
-      ["./.tst/lerna.json", MOCK_FILE_JSON],
+      ["lerna.json", MOCK_FILE_JSON],
       ["./.tst/tsconfig.json", MOCK_FILE_JSON],
       ["tsconfig.json", MOCK_TS_CONFIG_JSON],
       ["./.tst/tslint.json", MOCK_FILE_JSON],
@@ -147,6 +166,11 @@ describe("command: tst init", () => {
     ];
 
     test("file writes are correct for an empty project", () => {
+      CLI(argv("init"));
+      expect(mockFS.writeFileSync.mock.calls).toEqual(emptyProjectWrites);
+    });
+
+    test("file writes are correct for project with packages", () => {
       CLI(argv("init"));
       expect(mockFS.writeFileSync.mock.calls).toEqual(emptyProjectWrites);
     });

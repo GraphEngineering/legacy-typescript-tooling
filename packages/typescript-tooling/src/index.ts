@@ -4,6 +4,7 @@ import * as Path from "path";
 import CLI from "caporal";
 
 import * as Log from "./Log";
+import * as Utils from "./Utils";
 
 import * as Init from "./Init";
 import * as Scripts from "./Scripts";
@@ -17,10 +18,6 @@ export = (argv: string[]) => CLI.parse(argv);
 
 const packageJSON = JSON.parse(
   FS.readFileSync(Path.join(__dirname, `../package.json`)).toString()
-);
-
-const packages = FS.readdirSync("packages").filter(
-  itemName => !itemName.includes(".")
 );
 
 CLI.version(packageJSON.version).description("TypeScript Tooling");
@@ -45,9 +42,9 @@ CLI.command("init", Init.help)
   )
   .option(
     "--example",
-    `Creates an example package at ${Log.file(
-      "packages/example"
-    )} if ${Log.file("packages")} directory isn't found`,
+    `Creates ${Log.file("packages/example")} if ${Log.file(
+      "packages"
+    )} directory isn't found`,
     CLI.BOOLEAN,
     true
   )
@@ -57,7 +54,7 @@ CLI.command("init", Init.help)
     CLI.BOOLEAN,
     true
   )
-  .action(Init.action(packageJSON, packages));
+  .action(Init.action(packageJSON));
 
 CLI.command("deps", Deps.help)
   .help(Deps.help)
@@ -85,7 +82,9 @@ CLI.command("scripts", Scripts.help)
     CLI.BOOLEAN,
     true
   )
-  .action(Scripts.action(packages));
+  .action(Scripts.action);
+
+const packages = Utils.packages();
 
 CLI.command("test", Test.help)
   .help(Test.help)

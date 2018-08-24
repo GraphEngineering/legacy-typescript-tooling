@@ -1,32 +1,16 @@
-0 silly argv { _: [ 'publish' ],
+0 silly argv { _: [ 'add' ],
 0 silly argv   progress: true,
 0 silly argv   ci: false,
-0 silly argv   canary: true,
-0 silly argv   c: true,
+0 silly argv   scope: 'typescript-tooling',
+0 silly argv   dev: true,
+0 silly argv   D: true,
 0 silly argv   loglevel: 'info',
-0 silly argv   composed: 'publish',
+0 silly argv   globs: [],
 0 silly argv   lernaVersion: '3.1.2',
-0 silly argv   '$0': 'node_modules/.bin/lerna' }
+0 silly argv   '$0': 'node_modules/.bin/lerna',
+0 silly argv   pkg: '@types/copy-dir' }
 1 notice cli v3.1.2
 2 verbose rootPath /Users/cruhl/GitHub/typescript-tooling
-3 info canary enabled
-4 verbose git-describe undefined => "76bb7fc-dirty"
-5 silly git-describe parsed => {"isDirty":false}
-6 silly hasTags
-7 verbose hasTags true
-8 silly git-describe.sync "76bb7fc-dirty" => {"isDirty":false}
-9 info Looking for changed packages since undefined^..undefined
-10 silly diffSinceIn undefined^..undefined packages/typescript-tooling
-11 error Error: Command failed: git diff --name-only undefined^..undefined -- packages/typescript-tooling
-11 error fatal: bad revision 'undefined^..undefined'
-11 error
-11 error
-11 error     at makeError (/Users/cruhl/GitHub/typescript-tooling/node_modules/@lerna/child-process/node_modules/execa/index.js:172:9)
-11 error     at Function.module.exports.sync (/Users/cruhl/GitHub/typescript-tooling/node_modules/@lerna/child-process/node_modules/execa/index.js:341:15)
-11 error     at Object.execSync (/Users/cruhl/GitHub/typescript-tooling/node_modules/@lerna/child-process/index.js:22:16)
-11 error     at diffSinceIn (/Users/cruhl/GitHub/typescript-tooling/node_modules/@lerna/collect-updates/lib/make-diff-predicate.js:44:29)
-11 error     at hasDiffSinceThatIsntIgnored (/Users/cruhl/GitHub/typescript-tooling/node_modules/@lerna/collect-updates/lib/make-diff-predicate.js:15:18)
-11 error     at packages.forEach (/Users/cruhl/GitHub/typescript-tooling/node_modules/@lerna/collect-updates/collect-updates.js:60:50)
-11 error     at Map.forEach (<anonymous>)
-11 error     at collectUpdates (/Users/cruhl/GitHub/typescript-tooling/node_modules/@lerna/collect-updates/collect-updates.js:59:14)
-11 error     at chain.then (/Users/cruhl/GitHub/typescript-tooling/node_modules/@lerna/publish/index.js:208:7)
+3 error Error: 404 Not Found - GET https://registry.npmjs.org/@types%2fcopy-dir - Not found
+3 error     at res.buffer.catch.then.body (/Users/cruhl/GitHub/typescript-tooling/node_modules/npm-registry-fetch/check-response.js:94:15)
+3 error     at <anonymous>
