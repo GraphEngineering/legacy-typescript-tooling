@@ -34,7 +34,7 @@ npm run example:test
 ```
 ⟩ npx tst help
 
-   tst 4.0.1 - TypeScript Tooling
+   tst 4.0.0 - TypeScript Tooling
 
    USAGE
 
