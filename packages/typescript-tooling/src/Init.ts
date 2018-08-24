@@ -185,4 +185,10 @@ const createExamplePackage = (logger: Logger) => {
       Log.icons.checkMark
     )} Created example package at ${Log.file("packages/example")}`
   );
+
+  logger.info(
+    `${Log.notification(Log.icons.info)} You can test it with... ${Log.code(
+      "npm run example:test"
+    )}`
+  );
 };
