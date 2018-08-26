@@ -333,7 +333,7 @@ describe("command: tst test <package-name>", () => {
   test("`npx jest` is executed for a package", () => {
     CLI(argv("test package-a"));
     expect(mockChildProcess.spawnSync).toBeCalledWith(
-      "npx jest packages/package-a/**/*.spec.ts*",
+      "npx jest packages/package-a",
       ...MOCK_SPAWN_SYNC_ARGS
     );
   });
@@ -341,7 +341,7 @@ describe("command: tst test <package-name>", () => {
   test("`--watch` is passed to Jest", () => {
     CLI(argv("test package-a --watch"));
     expect(mockChildProcess.spawnSync).toBeCalledWith(
-      "npx jest --watch packages/package-a/**/*.spec.ts*",
+      "npx jest --watch packages/package-a",
       ...MOCK_SPAWN_SYNC_ARGS
     );
   });
