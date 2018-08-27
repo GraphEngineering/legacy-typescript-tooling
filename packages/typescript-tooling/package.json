@@ -1,7 +1,7 @@
 {
   "name": "typescript-tooling",
   "description": "This package helps keep TypeScript configuration and tooling synced up between seperate projects.",
-  "version": "4.0.2",
+  "version": "4.0.3-alpha.0+ce4aa8f",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cruhl/typescript-tooling.git"
@@ -57,5 +57,5 @@
     "@types/node": "^10.5.3",
     "@types/rimraf": "^2.0.2"
   },
-  "gitHead": "4499563b8389333d6b15f0ac2f5eef370a518e0e"
+  "gitHead": "ce4aa8f226bd55d2780e968a97d15b5ef909a7ae"
 }
