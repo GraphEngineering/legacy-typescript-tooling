@@ -13,7 +13,7 @@ export const action = async (args: any, _options: any, logger: Logger) => {
     ? ` --project ${packagePath}/tsconfig.json`
     : "";
 
-  const nodemonExec = `ts-node${project} --require tsconfig-paths/register ${packagePath}/src/index.ts`;
+  const nodemonExec = `ts-node${project} --require tsconfig-paths/register --files ${packagePath}/src`;
   const command = `nodemon --watch ${packagePath}/src --ext ts,tsx --exec "${nodemonExec}"`;
   const status = Shell.run(logger, command);
 

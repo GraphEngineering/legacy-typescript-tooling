@@ -355,7 +355,7 @@ describe("command: tst dev <package-name>", () => {
   test("`npx nodemon` is executed for a package", () => {
     CLI(argv("dev package-a"));
     expect(mockChildProcess.spawnSync).toBeCalledWith(
-      `nodemon --watch packages/package-a/src --ext ts,tsx --exec "ts-node --require tsconfig-paths/register packages/package-a/src/index.ts"`,
+      `nodemon --watch packages/package-a/src --ext ts,tsx --exec "ts-node --require tsconfig-paths/register --files packages/package-a/src"`,
       ...MOCK_SPAWN_SYNC_ARGS
     );
   });
@@ -365,7 +365,7 @@ describe("command: tst dev <package-name>", () => {
 
     CLI(argv("dev package-a"));
     expect(mockChildProcess.spawnSync).toBeCalledWith(
-      `nodemon --watch packages/package-a/src --ext ts,tsx --exec "ts-node --project packages/package-a/tsconfig.json --require tsconfig-paths/register packages/package-a/src/index.ts"`,
+      `nodemon --watch packages/package-a/src --ext ts,tsx --exec "ts-node --project packages/package-a/tsconfig.json --require tsconfig-paths/register --files packages/package-a/src"`,
       ...MOCK_SPAWN_SYNC_ARGS
     );
   });
