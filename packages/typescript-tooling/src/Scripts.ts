@@ -1,16 +1,15 @@
 import * as FS from "fs";
 
 import * as Log from "./Log";
+import * as Utils from "./Utils";
 
-export const help = `Automatically manage ${Log.tool(
+export const help = `Automatically generates ${Log.tool(
   "npm scripts"
 )} for packages`;
 
-export const action = (packages: string[]) => (
-  _args: any,
-  options: any,
-  logger: Logger
-) => {
+export const action = (_args: any, options: any, logger: Logger) => {
+  const packages = Utils.packages();
+
   logger.info("");
   options.save ? save(logger, packages) : print(logger, packages);
 };

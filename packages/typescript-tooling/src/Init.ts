@@ -1,21 +1,24 @@
-import * as FS from "fs";
 import * as Path from "path";
-
+import * as FS from "fs";
+import * as FSExtra from "fs-extra";
 import { default as Chalk } from "chalk";
-import * as Rimraf from "rimraf";
 
 import * as Log from "./Log";
+import * as Utils from "./Utils";
+
 import * as Scripts from "./Scripts";
 import * as Deps from "./Deps";
 
 const CONFIG_DIRECTORY_PATH = ".tst";
 const CONFIG_DEFAULTS_DIRECTORY_PATH = "../configs";
 
+const EXAMPLE_PACKAGES_DIRECTORY = "../packages";
+
 export const help = `Configure ${Log.tool(
   "Typescript Tooling"
 )} in the current directory`;
 
-export const action = (packageJSON: any, packages: string[]) => (
+export const action = (packageJSON: any) => (
   _args: any,
   options: any,
   logger: Logger
@@ -24,17 +27,25 @@ export const action = (packageJSON: any, packages: string[]) => (
   logger.info(
     `${Log.notification(Log.icons.info)} Copying ${Log.tool(
       "TypeScript Tooling"
-    )} defaults into ${Log.file(".tst")}, creating or extending config files...`
+    )} defaults into ${Log.file(
+      ".tst"
+    )} and creating or extending config files...`
   );
 
   logger.info("");
 
-  deleteOldConfigDirectory(logger);
+  deleteConfigDirectory(logger);
   createConfigDirectory(logger);
 
   ["lerna.json", "tsconfig.json", "tslint.json", "jest.config.js"].forEach(
     fileName => createConfigFiles(logger, fileName)
   );
+
+  if (options.example) {
+    createExamplePackage(logger);
+  }
+
+  const packages = Utils.packages();
 
   logger.info("");
   options.scripts
@@ -54,12 +65,14 @@ export const action = (packageJSON: any, packages: string[]) => (
   process.exit(status);
 };
 
-const deleteOldConfigDirectory = (logger: Logger) => {
+const deleteConfigDirectory = (logger: Logger) => {
   if (!FS.existsSync(CONFIG_DIRECTORY_PATH)) {
     return;
   }
 
-  Rimraf.sync(CONFIG_DIRECTORY_PATH);
+  FSExtra.emptyDirSync(CONFIG_DIRECTORY_PATH);
+  FS.rmdirSync(CONFIG_DIRECTORY_PATH);
+
   logger.info(
     Log.fileAction(Log.icons.checkMark, "Deleted", CONFIG_DIRECTORY_PATH)
   );
@@ -78,7 +91,10 @@ const createConfigDirectory = (logger: Logger) => {
 };
 
 const createConfigFiles = (logger: Logger, fileName: string) => {
-  const configFilePath = `./${CONFIG_DIRECTORY_PATH}/${fileName}`;
+  const configFilePath =
+    fileName === "lerna.json"
+      ? "lerna.json"
+      : `./${CONFIG_DIRECTORY_PATH}/${fileName}`;
 
   FS.writeFileSync(
     configFilePath,
@@ -150,5 +166,29 @@ const extendOrCreateUserConfigFile = (
       fileContents ? "Extended" : "Created",
       fileName
     )
+  );
+};
+
+const createExamplePackage = (logger: Logger) => {
+  if (FS.existsSync("packages")) {
+    return;
+  }
+
+  FSExtra.copySync(
+    Path.join(__dirname, EXAMPLE_PACKAGES_DIRECTORY),
+    "packages"
+  );
+
+  logger.info("");
+  logger.info(
+    `${Log.notification(
+      Log.icons.checkMark
+    )} Created example package at ${Log.file("packages/example")}`
+  );
+
+  logger.info(
+    `${Log.notification(Log.icons.info)} You can test it with... ${Log.code(
+      "npm run example:test"
+    )}`
   );
 };
