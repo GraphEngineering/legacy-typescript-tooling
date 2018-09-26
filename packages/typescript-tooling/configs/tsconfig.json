@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
 
-    // include latest EcmaScript library (for things like `Object.values`, etc.)
+    // Include latest EcmaScript library (for things like `Object.values`, etc.)
     "lib": ["es2018"],
 
     "sourceMap": true,
@@ -10,25 +10,25 @@
     "module": "commonjs",
     "moduleResolution": "node",
 
-    // this allows you to import `../<package>/src` as `~/<package>`
+    // This allows you to import `../<package>/src` as `~/<package>`
     "baseUrl": "../packages",
     "paths": { "~/*": ["./*/src"] },
 
-    // make sure the code is high-quality
+    // Make sure the code is high-quality
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
 
-    // allow imports like `import Moment from "moment"; Moment("<date>");`
+    // Allow imports like `import Moment from "moment"; Moment("<date>");`
     "esModuleInterop": true,
 
-    // lets us use modules which have funky default exports
+    // Lets us use modules which have funky default exports
     "allowSyntheticDefaultImports": true,
 
-    // lets us import JSON directly e.g. `import DATA from data.json`
+    // Lets us import JSON directly e.g. `import DATA from data.json`
     "resolveJsonModule": true,
 
-    // don't check the types of our dependencies
+    // Don't check the types of our dependencies
     "skipLibCheck": true
   }
 }

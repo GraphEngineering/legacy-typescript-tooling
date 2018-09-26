@@ -1,11 +1,11 @@
 module.exports = {
-  // by default, we're expecting to be testing in a node environment
+  // By default, we're expecting to be testing in a node environment
   testEnvironment: "node",
 
-  // look for files matching `*.spec.ts(x)`
+  // Look for files matching `*.spec.ts(x)`
   testMatch: ["**/?(*.)+(spec).ts?(x)"],
 
-  // run those files using `ts-jest`
+  // Run those files using `ts-jest`
   transform: { "^.+\\.(ts|tsx)$": "ts-jest" },
 
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],

@@ -32,7 +32,7 @@ npm run example:dev
 ## Usage
 
 ```
-⟩ npx tst help
+$ npx tst help
 
    tst 3.0.3 - TypeScript Tooling
 
