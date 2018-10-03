@@ -22,7 +22,10 @@
     */
     "interface-name": false,
 
-    // Require braces for everything except one-liners, e.g. `if (true) return;`
+    /*
+      Require braces for everything except one-liners, e.g. `if (true) return;`
+      (from `tslint:latest`/`tslint-config-prettier`)
+    */
     "curly": [true, "ignore-same-line"],
 
     // Ban bad variable names, allow `_<variableName>` and `<VariableName>`
