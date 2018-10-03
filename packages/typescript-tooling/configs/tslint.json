@@ -1,6 +1,6 @@
 {
   // Extend community defaults, but use Prettier's exceptions
-  "extends": ["tslint:latest", "tslint-config-prettier"],
+  "extends": ["tslint:latest", "tslint-config-prettier", "tslint-react"],
 
   "rules": {
     // Ban `import * as foo from "bar/bazz";`
@@ -22,6 +22,9 @@
     */
     "interface-name": false,
 
+    // Require braces for everything except one-liners, e.g. `if (true) return;`
+    "curly": [true, "ignore-same-line"],
+
     // Ban bad variable names, allow `_<variableName>` and `<VariableName>`
     "variable-name": [true, "allow-leading-underscore", "allow-pascal-case"],
 
@@ -29,6 +32,9 @@
     "no-shadowed-variable": false,
 
     // Ban unused variables except for `_<variableName>`, which means ignored
-    "no-unused-variable": [true, { "ignore-pattern": "^_" }]
+    "no-unused-variable": [true, { "ignore-pattern": "^_" }],
+
+    // Allow multiple lines of TypeScript in JSX
+    "jsx-no-multiline-js": false
   }
 }
