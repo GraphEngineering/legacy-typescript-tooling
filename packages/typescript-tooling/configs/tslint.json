@@ -1,6 +1,6 @@
 {
-  // Extend community defaults, but use Prettier's exceptions
-  "extends": ["tslint:latest", "tslint-config-prettier", "tslint-react"],
+  // Extend the community defaults, but use Prettier's exceptions
+  "extends": ["tslint:latest", "tslint-config-prettier"],
 
   "rules": {
     // Ban `import * as foo from "bar/bazz";`
