@@ -35,9 +35,6 @@
     "no-shadowed-variable": false,
 
     // Ban unused variables except for `_<variableName>`, which means ignored
-    "no-unused-variable": [true, { "ignore-pattern": "^_" }],
-
-    // Allow multiple lines of TypeScript in JSX
-    "jsx-no-multiline-js": false
+    "no-unused-variable": [true, { "ignore-pattern": "^_" }]
   }
 }
