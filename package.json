@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "tst:init": "tst init",
+    "tst:init": "tst init --install false",
     "tst:scripts": "tst scripts",
     "tst:deps": "tst deps",
     "typescript-tooling:test": "tst test typescript-tooling",

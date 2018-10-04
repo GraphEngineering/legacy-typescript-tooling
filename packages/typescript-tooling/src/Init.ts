@@ -41,9 +41,7 @@ export const action = (packageJSON: any) => (
     fileName => createConfigFiles(logger, fileName)
   );
 
-  if (options.example) {
-    createExamplePackage(logger);
-  }
+  if (options.example) createExamplePackage(logger);
 
   const packages = Utils.packages();
 
@@ -66,9 +64,7 @@ export const action = (packageJSON: any) => (
 };
 
 const deleteConfigDirectory = (logger: Logger) => {
-  if (!FS.existsSync(CONFIG_DIRECTORY_PATH)) {
-    return;
-  }
+  if (!FS.existsSync(CONFIG_DIRECTORY_PATH)) return;
 
   FSExtra.emptyDirSync(CONFIG_DIRECTORY_PATH);
   FS.rmdirSync(CONFIG_DIRECTORY_PATH);
@@ -111,9 +107,7 @@ const createConfigFiles = (logger: Logger, fileName: string) => {
     )
   );
 
-  if (fileName === "lerna.json") {
-    return;
-  }
+  if (fileName === "lerna.json") return;
 
   const contents =
     FS.existsSync(fileName) && FS.readFileSync(fileName).toString();
@@ -131,9 +125,7 @@ const createJSConfigFile = (
   fileContents: string | false,
   configFilePath: string
 ) => {
-  if (fileContents) {
-    return;
-  }
+  if (fileContents) return;
 
   FS.writeFileSync(
     fileName,
@@ -151,9 +143,7 @@ const extendOrCreateUserConfigFile = (
 ) => {
   const config = fileContents ? JSON.parse(fileContents) : {};
 
-  if (config.extends) {
-    return;
-  }
+  if (config.extends) return;
 
   FS.writeFileSync(
     fileName,
@@ -170,9 +160,7 @@ const extendOrCreateUserConfigFile = (
 };
 
 const createExamplePackage = (logger: Logger) => {
-  if (FS.existsSync("packages")) {
-    return;
-  }
+  if (FS.existsSync("packages")) return;
 
   FSExtra.copySync(
     Path.join(__dirname, EXAMPLE_PACKAGES_DIRECTORY),
