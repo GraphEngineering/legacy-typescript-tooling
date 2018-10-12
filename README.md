@@ -46,7 +46,7 @@ npm run example:build
 ## How does TST work?
 
 TST writes default config files to the `.tst` directory whenever `tst init` is
-executed. Commands like `tst build <package-name>` simply run a CLI command
+executed. Commands like `tst build <package-name>` simply run CLI commands
 assuming those defaults are in place. For example, `tst test <package-name>`
 runs the command `npx jest packages/<package-name>`.
 
