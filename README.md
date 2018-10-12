@@ -52,7 +52,7 @@ runs the command `npx jest packages/<package-name>`.
 
 Nothing special is happening here! Feel free to run these commands on your own
 without using TST. Since no magic is involved, it's easy to stop using this
-tool, just all of the files in `.tst` into the project root and add the commands
+tool, just move the files in `.tst` to root of the project and add the commands
 TST generates to the `scripts` section of your `package.json`.
 
 ### Setting Up a Project
