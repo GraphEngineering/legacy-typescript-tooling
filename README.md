@@ -45,19 +45,22 @@ npm run example:build
 
 ## How does TST work?
 
-Whenever `tst init` is executed default config files are written into the `.tst`
-directory. Commands like `tst build <package-name>` simply run CLI commands
-assuming those defaults are in place. For example, `tst test <package-name>`
-runs the command `npx jest packages/<package-name>`.
+Whenever `tst init` is executed, TST's default config files are written into the
+`.tst` directory. Commands like `tst build <package-name>` simply run CLI
+commands assuming those defaults are in place. For example,
+`tst test <package-name>` runs the command `npx jest packages/<package-name>`.
 
 Nothing special is happening here! Feel free to run these commands on your own
 without using TST. Since no magic is involved, it's easy to stop using this
 tool, just move the files in `.tst` to root of the project and add the commands
 TST generates to the `scripts` section of your `package.json`.
 
-### Setting Up a Project
+## What's in the defaults?
 
-### Creating a New Package
+If you're interested in seeing what TST uses as its defaults for TypeScript,
+Lerna, Nodemon, and Jest, check out the
+[`configs` folder](https://github.com/cruhl/typescript-tooling/tree/master/packages/typescript-tooling/configs).
+These files are what's written into `.tst` during a `tst init`.
 
 ## CLI Usage
 
