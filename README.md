@@ -59,8 +59,9 @@ TST generates to the `scripts` section of your `package.json`.
 
 If you're interested in seeing what TST uses as its defaults for TypeScript,
 Lerna, Nodemon, and Jest, check out the
-[`configs` folder](https://github.com/cruhl/typescript-tooling/tree/master/packages/typescript-tooling/configs).
-These files are what's written into `.tst` during a `tst init`.
+[`configs` folder](https://github.com/cruhl/typescript-tooling/tree/master/packages/typescript-tooling/configs)
+(most settings are explained through comments). These files are what's written
+into `.tst` during a `tst init`.
 
 ## CLI Usage
 
