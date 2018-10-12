@@ -45,9 +45,15 @@ npm run example:build
 
 ## How does TST work?
 
-TST writes its defaults to a folder (`.tst`) and then generates and runs CLI
-commands assuming those defaults are in place. While running `npx tst init` in
-an empty node project you should see something like this...
+TST writes default config files to the `.tst` directory whenever `tst init` is
+executed. Commands like `tst build <package-name>` simply run a CLI command
+assuming those defaults are in place. For example, `tst test <package-name>`
+runs the command `npx jest packages/<package-name>`.
+
+Nothing special is happening here! Feel free to run these commands on your own
+without using TST. Since no magic is involved, it's easy to stop using this
+tool, just all of the files in `.tst` into the project root and add the commands
+TST generates to the `scripts` section of your `package.json`.
 
 ### Setting Up a Project
 
