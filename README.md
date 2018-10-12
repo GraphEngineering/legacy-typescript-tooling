@@ -5,8 +5,8 @@ A tool for creating and managing TypeScript projects with minimal configuration.
 ## Features
 
 TypeScript's developer experience is a major improvement over vanilla
-JavaScript, however, configuring and managing everything needed to be productive
-is still a major hassle. That's why TypeScript Tooling (`tst`)...
+JavaScript, however, it's still a hassle to configure and manage the tools
+needed to be productive. That's why TypeScript Tooling (`tst`)...
 
 - 🛠️ Provides reasonable defaults for [TypeScript](https://github.com/Microsoft/TypeScript), [TSLint](https://github.com/palantir/tslint), [Jest](https://github.com/facebook/jest), and [Nodemon](https://github.com/remy/nodemon)
 - 🐉 Uses a monorepo project structure with help from [Lerna](https://github.com/lerna/lerna)
