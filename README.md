@@ -56,7 +56,7 @@ this tool, just move config files from `.tst` into the project root and add the
 commands TST generates to the `scripts` section of your `package.json`. For
 example...
 
-```json
+```
 // `package.json`
 
 {
@@ -68,7 +68,7 @@ example...
 
 ...would become...
 
-```json
+```
 // `package.json`
 
 {
@@ -92,7 +92,7 @@ TypeScript and TSLint settings can be overwritten in the same way. TST creates
 or modifies `<tsconfig|tslint>.json` in your project root to extend the defaults
 in the `.tst` directory...
 
-```json
+```
 // `<tsconfig|tslint>.json`
 
 {
@@ -104,7 +104,7 @@ in the `.tst` directory...
 If you want to add or modify any settings, `<tsconfig|tslint>.json` behaves just
 as you'd expect, just modify the file...
 
-```json
+```
 // `tslint.json`
 
 {
@@ -120,7 +120,7 @@ It's easy to change settings for individual packages. Imagine you want to enable
 TypeScript's DOM library for a `ui` package, you would just need to create a
 `tsconfig.json` in the `packages/ui` directory...
 
-```json
+```
 // `packages/ui/tsconfig.json`
 
 {
@@ -192,7 +192,7 @@ You can add the build script in `packages/ui/package.json`...
 To enable running `npm run ui:build` from the project root, we need to modify
 the NPM script in `package.json`...
 
-```json
+```
 // `package.json`
 
 {
