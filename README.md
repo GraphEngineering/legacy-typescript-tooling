@@ -40,6 +40,14 @@ npm run example:dev
 npm run example:build
 ```
 
+## Usage
+
+```
+npx tst help
+```
+
+![Usage](https://github.com/cruhl/typescript-tooling/blob/master/images/usage.jpg)
+
 ## How does TST work?
 
 Running `tst init` copies config files for various tools into a new `.tst`
@@ -80,17 +88,15 @@ example...
 
 ## What's in the defaults?
 
-If you're interested in seeing what TST uses as its defaults for TypeScript,
-Lerna, Nodemon, and Jest, check out the
-[`configs` folder](https://github.com/cruhl/typescript-tooling/tree/master/packages/typescript-tooling/configs)
-(most settings include comments). These files are copied into `.tst` during a
+If you're interested in seeing TST's defaults for TypeScript, Lerna, Nodemon,
+and Jest, check out the
+[`configs` folder](https://github.com/cruhl/typescript-tooling/tree/master/packages/typescript-tooling/configs); these files are copied into `.tst` during a
 `tst init`.
 
 ### Overriding TypeScript and TSLint Settings
 
-TypeScript and TSLint settings can be overwritten in the same way. TST creates
-or modifies `<tsconfig|tslint>.json` in your project root to extend the defaults
-in the `.tst` directory...
+TST creates or modifies `<tsconfig|tslint>.json` in your project root to extend
+the defaults in the `.tst` directory...
 
 ```
 // `<tsconfig|tslint>.json`
@@ -116,9 +122,9 @@ as you'd expect, just modify the file...
 }
 ```
 
-It's easy to change settings for individual packages. Imagine you want to enable
-TypeScript's DOM library for a `ui` package, you would just need to create a
-`tsconfig.json` in the `packages/ui` directory...
+It's easy to change settings for individual packages too. Imagine you want to
+enable TypeScript's DOM library for a `ui` package, you would just need to
+create `packages/ui/tsconfig.json`...
 
 ```
 // `packages/ui/tsconfig.json`
@@ -136,16 +142,28 @@ TypeScript's DOM library for a `ui` package, you would just need to create a
 
 You can do the same thing for TSLint settings.
 
-## Working with a Monorepo
+### Overriding Jest Settings
 
-## Creating a New Package
+TST exports a Jest configuration object from `.tst/jest.config.js` you can
+modify and re-export from your project's `jest.config.js`...
+
+```js
+// `jest.config.js`
+
+module.exports = {
+  ...require(".tst/jest.config.js"),
+  bail: true
+};
+```
+
+## Working with a Monorepo
 
 TypeScript Tooling is built to be used with
 [Lerna](https://github.com/lerna/lerna), which means it's easy to separate
 code into multiple packages within the same project. Want to have independently
 versioned/deployed `types`, `api`, and `ui` packages? No problem!
 
-Here's how to create a new package...
+### Creating a New Package
 
 1. First, make a new folder at `packages/<package-name>`
 2. Create `packages/<package-name>/package.json` and make sure its `name` field
@@ -175,9 +193,9 @@ aren't constantly bouncing around using `cd`. However, an overly complicated set
 of NPM scripts in one gigantic `package.json` isn't so great.
 
 Luckily, [Lerna](https://github.com/lerna/lerna) allows you to execute NPM
-Scripts from any package without leaving the project root. Let's you want to use
-[Parcel](https://parceljs.org/) to build deployable bundles for a `ui` package.
-You can add the build script in `packages/ui/package.json`...
+Scripts from any package without leaving the project root. Let's say you want to
+use [Parcel](https://parceljs.org/) to build deployable bundles for a `ui`
+package. You can add the build script in `packages/ui/package.json`...
 
 ```json
 // `packages/ui/package.json`
@@ -189,8 +207,8 @@ You can add the build script in `packages/ui/package.json`...
 }
 ```
 
-To enable running `npm run ui:build` from the project root, we need to modify
-the NPM script in `package.json`...
+To enable `npm run ui:build` from the project root, we need to modify
+the NPM script in the root `package.json`...
 
 ```
 // `package.json`
@@ -203,40 +221,7 @@ the NPM script in `package.json`...
 }
 ```
 
-It's important to know `npx tst scripts` or `npm run tst:scripts` will not
-override a script you've defined.
-
-## CLI Usage
-
-```
-npx tst help
-```
-
-```
-tst 4.0.0 - TypeScript Tooling
-
-USAGE
-
-  tst <command> [options]
-
-COMMANDS
-
-  init                      Configure Typescript Tooling in the current directory
-  deps                      Install and save required peerDependencies
-  scripts                   Automatically generates npm scripts for packages
-  test <package-name>       Run tests with Jest
-  dev <package-name>        Run a package with nodemon
-  build <package-name>      Build a package with Parcel
-  help <command>            Display help for a specific command
-
-GLOBAL OPTIONS
-
-  -h, --help         Display help
-  -V, --version      Display version
-  --no-color         Disable colors
-  --quiet            Quiet mode - only displays warn and error messages
-  -v, --verbose      Verbose mode - will also output debug messages
-```
+It's important to know `npx tst scripts` or `npm run tst:scripts` doesn't override scripts you've defined.
 
 ## License
 
