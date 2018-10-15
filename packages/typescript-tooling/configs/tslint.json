@@ -1,0 +1,40 @@
+{
+  // Extend the community defaults, but use Prettier's exceptions
+  "extends": ["tslint:latest", "tslint-config-prettier"],
+
+  "rules": {
+    // Ban `import * as foo from "bar/bazz";`
+    // Make an exception for cross-package imports `~/<package>`
+    "no-submodule-imports": [true, "~"],
+
+    // Don't order imports (from `tslint:latest`/`tslint-config-prettier`)
+    "ordered-imports": false,
+
+    // Ban reliance on packages which aren't actually imported
+    "no-implicit-dependencies": false,
+
+    // Don't order object keys (from `tslint:latest`/`tslint-config-prettier`)
+    "object-literal-sort-keys": false,
+
+    /*
+      Don't require "I" as the first letter of an interface name
+      (from `tslint:latest`/`tslint-config-prettier`)
+    */
+    "interface-name": false,
+
+    /*
+      Require braces for everything except one-liners, e.g. `if (true) return;`
+      (from `tslint:latest`/`tslint-config-prettier`)
+    */
+    "curly": [true, "ignore-same-line"],
+
+    // Ban bad variable names, allow `_<variableName>` and `<VariableName>`
+    "variable-name": [true, "allow-leading-underscore", "allow-pascal-case"],
+
+    // ES6 makes this safe, also it sometimes makes since to reuse a name
+    "no-shadowed-variable": false,
+
+    // Ban unused variables except for `_<variableName>`, which means ignored
+    "no-unused-variable": [true, { "ignore-pattern": "^_" }]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "name": "typescript-tooling",
+  "description": "This package helps keep TypeScript configuration and tooling synced up between seperate projects.",
+  "version": "4.0.3",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cruhl/typescript-tooling.git"
+  },
+  "keywords": [
+    "typescript",
+    "tslint",
+    "prettier",
+    "tooling"
+  ],
+  "author": "cruhl",
+  "license": "MIT",
+  "homepage": "https://github.com/cruhl/typescript-tooling#readme",
+  "bugs": {
+    "url": "https://github.com/cruhl/typescript-tooling/issues"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "configs",
+    "packages"
+  ],
+  "main": "dist/index.js",
+  "bin": {
+    "tst": "bin/cli.js"
+  },
+  "peerDependencies": {
+    "@types/jest": "^23.0.0",
+    "@types/node": "^10.5.3",
+    "jest": "^23.1.0",
+    "lerna": "^3.1.2",
+    "nodemon": "^1.18.2",
+    "parcel-bundler": "^1.9.7",
+    "parcel-plugin-typescript": "^1.0.0",
+    "ts-jest": "^23.0.1",
+    "ts-node": "^7.0.0",
+    "tsconfig-paths": "^3.3.2",
+    "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.13.0",
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "caporal": "^0.10.0",
+    "chalk": "^2.4.1",
+    "copy-dir": "^0.4.0",
+    "fs-extra": "^7.0.0",
+    "lodash": "^4.17.10",
+    "rimraf": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^5.0.4",
+    "@types/lodash": "^4.14.112",
+    "@types/node": "^10.5.3",
+    "@types/rimraf": "^2.0.2"
+  },
+  "gitHead": "ce4aa8f226bd55d2780e968a97d15b5ef909a7ae"
+}

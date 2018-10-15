@@ -1,20 +1,29 @@
 {
-  "name": "@cryptograph/typescript-tooling",
-  "version": "1.0.5",
-  "description":
-    "This package helps to keep all of the Typescript configuration and tooling synced up between seperate CryptoGraph projects.",
+  "private": true,
   "scripts": {
-    "postinstall": "node index.js"
+    "tst:init": "tst init --install false",
+    "tst:scripts": "tst scripts",
+    "tst:deps": "tst deps",
+    "typescript-tooling:test": "tst test typescript-tooling",
+    "typescript-tooling:test:watch": "tst test typescript-tooling --watch",
+    "typescript-tooling:dev": "tst dev typescript-tooling",
+    "typescript-tooling:build": "tst build typescript-tooling"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GraphEngineering/typescript-tooling.git"
+  "devDependencies": {
+    "@types/jest": "^23.3.5",
+    "@types/node": "^10.11.7",
+    "jest": "^23.6.0",
+    "lerna": "^3.4.3",
+    "nodemon": "^1.18.4",
+    "parcel-bundler": "^1.10.3",
+    "parcel-plugin-typescript": "^1.0.0",
+    "ts-jest": "^23.10.4",
+    "ts-node": "^7.0.1",
+    "tsconfig-paths": "^3.6.0",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "typescript": "^3.1.3",
+    "typescript-tooling": "^4.1.0-alpha.01ab903"
   },
-  "keywords": ["typescript", "tslint", "prettier", "tooling"],
-  "author": "CryptoGraph",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/GraphEngineering/typescript-tooling/issues"
-  },
-  "homepage": "https://github.com/GraphEngineering/typescript-tooling#readme"
+  "dependencies": {}
 }
